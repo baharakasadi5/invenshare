@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'add_invention_page.dart';
+import 'invention_details_page.dart';
 import '../providers/invention_provider.dart';
 
 
@@ -43,8 +44,8 @@ class InventionsPage extends ConsumerWidget {
 
         ),
 
-
       ),
+
 
 
 
@@ -69,6 +70,7 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+
               itemBuilder: (context,index){
 
 
@@ -86,8 +88,37 @@ class InventionsPage extends ConsumerWidget {
                   child: ListTile(
 
 
+
+                    onTap: () {
+
+
+                      Navigator.push(
+
+                        context,
+
+                        MaterialPageRoute(
+
+                          builder: (context) =>
+
+                              InventionDetailsPage(
+
+                                invention: invention,
+
+                              ),
+
+                        ),
+
+                      );
+
+
+                    },
+
+
+
+
                     contentPadding:
                     const EdgeInsets.all(16),
+
 
 
 
@@ -100,27 +131,37 @@ class InventionsPage extends ConsumerWidget {
 
                       ),
 
-
                     ),
+
+
 
 
 
                     title: Text(
 
+
                       invention.title,
 
+
                       style: const TextStyle(
+
 
                         fontWeight:
                         FontWeight.bold,
 
+
                       ),
+
 
                     ),
 
 
 
+
+
+
                     subtitle: Padding(
+
 
                       padding:
                       const EdgeInsets.only(
@@ -128,22 +169,31 @@ class InventionsPage extends ConsumerWidget {
                       ),
 
 
+
                       child: Text(
+
 
                         invention.description,
 
+
                         maxLines:2,
+
 
                         overflow:
                         TextOverflow.ellipsis,
 
+
                       ),
+
 
                     ),
 
 
 
+
+
                     trailing: IconButton(
+
 
 
                       icon: const Icon(
@@ -151,6 +201,7 @@ class InventionsPage extends ConsumerWidget {
                         Icons.delete_outline,
 
                       ),
+
 
 
                       onPressed: () async {
@@ -162,7 +213,9 @@ class InventionsPage extends ConsumerWidget {
                               .notifier,
                         )
                             .deleteInvention(
+
                           invention.id,
+
                         );
 
 
@@ -172,7 +225,9 @@ class InventionsPage extends ConsumerWidget {
                     ),
 
 
+
                   ),
+
 
 
                 );
@@ -186,36 +241,53 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+
+
       floatingActionButton:
+
       FloatingActionButton.extended(
+
 
 
         onPressed: () {
 
 
+
           Navigator.push(
+
 
             context,
 
 
             MaterialPageRoute(
 
+
+
               builder: (context) =>
+
               const AddInventionPage(),
+
+
 
             ),
 
 
+
           );
+
 
 
         },
 
 
 
+
         icon: const Icon(
+
           Icons.add,
+
         ),
+
 
 
 
@@ -226,7 +298,9 @@ class InventionsPage extends ConsumerWidget {
         ),
 
 
+
       ),
+
 
 
     );
@@ -234,7 +308,10 @@ class InventionsPage extends ConsumerWidget {
 
   }
 
+
 }
+
+
 
 
 
@@ -250,6 +327,7 @@ class _EmptyInventionsView extends StatelessWidget {
   Widget build(BuildContext context) {
 
 
+
     return Center(
 
 
@@ -258,14 +336,13 @@ class _EmptyInventionsView extends StatelessWidget {
 
         padding:
         const EdgeInsets.all(32),
+      child: Column(
 
-
-
-        child: Column(
 
 
           mainAxisAlignment:
           MainAxisAlignment.center,
+
 
 
 
@@ -275,16 +352,27 @@ class _EmptyInventionsView extends StatelessWidget {
 
             Icon(
 
+
               Icons.lightbulb_outline_rounded,
+
 
               size:88,
 
+
+
               color:
+
               Theme.of(context)
+
                   .colorScheme
+
                   .primary,
 
+
+
             ),
+
+
 
 
 
@@ -293,23 +381,42 @@ class _EmptyInventionsView extends StatelessWidget {
 
 
 
+
             const Text(
+
+
 
               'هنوز اختراعی ثبت نشده است',
 
+
+
               style: TextStyle(
+
+
 
                 fontSize:20,
 
+
+
                 fontWeight:
+
                 FontWeight.bold,
+
+
 
               ),
 
+
+
               textAlign:
+
               TextAlign.center,
 
+
+
             ),
+
+
 
 
 
@@ -318,39 +425,61 @@ class _EmptyInventionsView extends StatelessWidget {
 
 
 
+
+
             Text(
+
+
 
               'با انتخاب «ثبت اختراع»، اولین ایده یا اختراع خود را به InvenShare اضافه کنید.',
 
 
+
               style: TextStyle(
 
+
+
                 color:
+
                 Theme.of(context)
+
                     .colorScheme
+
                     .onSurfaceVariant,
+
+
 
               ),
 
 
+
+
               textAlign:
+
               TextAlign.center,
 
+
+
             ),
+
 
 
           ],
 
 
+
         ),
 
 
+
       ),
+
 
 
     );
 
 
   }
+
 
 }
