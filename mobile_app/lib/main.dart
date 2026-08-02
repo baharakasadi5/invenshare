@@ -19,7 +19,7 @@ Future<void> main() async {
 
 
 
-  // Register Hive Adapter safely
+  // Register Hive Adapter
   if (!Hive.isAdapterRegistered(0)) {
 
     Hive.registerAdapter(
@@ -31,7 +31,7 @@ Future<void> main() async {
 
 
   // Open local database
-  // اطلاعات کاربر حفظ می‌شود
+  // اطلاعات اختراعات بعد از بستن برنامه حفظ می‌شود
   await Hive.openBox<Invention>(
     'inventions',
   );
@@ -90,15 +90,15 @@ class InvenShareApp extends StatelessWidget {
 
       supportedLocales: const [
 
-        Locale('fa','IR'),
+        Locale('fa', 'IR'),
 
-        Locale('en','US'),
+        Locale('en', 'US'),
 
       ],
 
 
 
-      locale: const Locale('fa','IR'),
+      locale: const Locale('fa', 'IR'),
 
 
 
@@ -123,7 +123,7 @@ class InvenShareApp extends StatelessWidget {
 
         scaffoldBackgroundColor:
 
-            Color(0xFFF9F9FC),
+            const Color(0xFFF9F9FC),
 
 
 
