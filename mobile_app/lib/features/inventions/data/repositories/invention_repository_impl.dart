@@ -1,46 +1,73 @@
 // lib/features/inventions/data/repositories/invention_repository_impl.dart
 
+
 import '../../domain/entities/invention.dart';
 import '../../domain/repositories/invention_repository.dart';
 
+import '../sources/invention_local_source.dart';
 
-class InventionRepositoryImpl implements InventionRepository {
 
 
-  final List<Invention> _inventions = [];
+class InventionRepositoryImpl 
+    implements InventionRepository {
+
+
+
+  final InventionLocalSource localSource;
+
+
+
+  InventionRepositoryImpl(
+    this.localSource,
+  );
+
 
 
   @override
-  Future<List<Invention>> getInventions() async {
-    return _inventions;
+  Future<List<Invention>> getInventions() {
+
+    return localSource.getInventions();
+
   }
 
 
-  @override
-  Future<void> addInvention(Invention invention) async {
-    _inventions.add(invention);
-  }
-
 
   @override
-  Future<void> deleteInvention(String id) async {
-    _inventions.removeWhere(
-      (item) => item.id == id,
+  Future<void> addInvention(
+    Invention invention,
+  ) {
+
+    return localSource.addInvention(
+      invention,
     );
+
   }
+
 
 
   @override
-  Future<void> updateInvention(Invention invention) async {
+  Future<void> deleteInvention(
+    String id,
+  ) {
 
-    final index = _inventions.indexWhere(
-      (item) => item.id == invention.id,
+    return localSource.deleteInvention(
+      id,
     );
 
-    if (index != -1) {
-      _inventions[index] = invention;
-    }
+  }
+
+
+
+  @override
+  Future<void> updateInvention(
+    Invention invention,
+  ) {
+
+    return localSource.updateInvention(
+      invention,
+    );
 
   }
+
 
 }
