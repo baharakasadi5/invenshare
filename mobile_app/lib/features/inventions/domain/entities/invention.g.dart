@@ -20,9 +20,9 @@ class InventionAdapter extends TypeAdapter<Invention> {
       id: fields[0] as String,
       title: fields[1] as String,
       description: fields[2] as String,
-      category: fields[3] as String,
-      inventorName: fields[4] as String,
-      createdAt: fields[5] as DateTime,
+      createdAt: fields[3] as DateTime,
+      category: fields[4] as String,
+      inventorName: fields[5] as String,
       aiAnalysis: fields[6] as String,
       status: fields[7] as String,
       images: (fields[8] as List).cast<String>(),
@@ -40,11 +40,11 @@ class InventionAdapter extends TypeAdapter<Invention> {
       ..writeByte(2)
       ..write(obj.description)
       ..writeByte(3)
-      ..write(obj.category)
-      ..writeByte(4)
-      ..write(obj.inventorName)
-      ..writeByte(5)
       ..write(obj.createdAt)
+      ..writeByte(4)
+      ..write(obj.category)
+      ..writeByte(5)
+      ..write(obj.inventorName)
       ..writeByte(6)
       ..write(obj.aiAnalysis)
       ..writeByte(7)

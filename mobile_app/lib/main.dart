@@ -9,7 +9,6 @@ import 'features/inventions/domain/entities/invention.dart';
 import 'features/inventions/presentation/pages/inventions_page.dart';
 
 
-
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,10 +22,11 @@ Future<void> main() async {
   // Register Hive Adapter safely
   if (!Hive.isAdapterRegistered(0)) {
 
-    Hive.registerAdapter(InventionAdapter());
+    Hive.registerAdapter(
+      InventionAdapter(),
+    );
 
   }
-
 
 
 
@@ -123,7 +123,7 @@ class InvenShareApp extends StatelessWidget {
 
         scaffoldBackgroundColor:
 
-        Color(0xFFF9F9FC),
+            Color(0xFFF9F9FC),
 
 
 
@@ -137,13 +137,11 @@ class InvenShareApp extends StatelessWidget {
 
         ),
 
-
       ),
 
 
 
       home: const InventionsPage(),
-
 
     );
 
