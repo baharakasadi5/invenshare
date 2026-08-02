@@ -1,5 +1,3 @@
-// lib/features/inventions/presentation/pages/inventions_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,9 +35,7 @@ class InventionsPage extends ConsumerWidget {
           'InvenShare',
 
           style: TextStyle(
-
             fontWeight: FontWeight.bold,
-
           ),
 
         ),
@@ -65,7 +61,7 @@ class InventionsPage extends ConsumerWidget {
               itemCount: inventions.length,
 
 
-              separatorBuilder: (context,index) =>
+              separatorBuilder: (_, __) =>
                   const SizedBox(height:12),
 
 
@@ -85,8 +81,12 @@ class InventionsPage extends ConsumerWidget {
                   elevation: 1,
 
 
-                  child: ListTile(
+                  clipBehavior:
+                  Clip.antiAlias,
 
+
+
+                  child: InkWell(
 
 
                     onTap: () {
@@ -98,8 +98,7 @@ class InventionsPage extends ConsumerWidget {
 
                         MaterialPageRoute(
 
-                          builder: (context) =>
-
+                          builder: (_) =>
                               InventionDetailsPage(
 
                                 invention: invention,
@@ -115,115 +114,151 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-
-                    contentPadding:
-                    const EdgeInsets.all(16),
+                    child: ListTile(
 
 
 
+                      contentPadding:
+                      const EdgeInsets.all(16),
 
-                    leading: CircleAvatar(
 
 
-                      child: const Icon(
 
-                        Icons.lightbulb_outline,
+                      leading: CircleAvatar(
+
+
+                        backgroundColor:
+
+                        Theme.of(context)
+
+                            .colorScheme
+
+                            .primaryContainer,
+
+
+
+                        child: Icon(
+
+                          Icons.lightbulb_outline,
+
+                          color:
+
+                          Theme.of(context)
+
+                              .colorScheme
+
+                              .primary,
+
+                        ),
 
                       ),
+
+
+
+
+
+                      title: Text(
+
+
+                        invention.title,
+
+
+                        style:
+
+                        const TextStyle(
+
+
+                          fontWeight:
+
+                          FontWeight.bold,
+
+
+                          fontSize:16,
+
+
+                        ),
+
+
+                      ),
+
+
+
+
+
+
+                      subtitle: Padding(
+
+
+                        padding:
+
+                        const EdgeInsets.only(
+
+                          top:8,
+
+                        ),
+
+
+
+                        child: Text(
+
+
+                          invention.description,
+
+
+                          maxLines:2,
+
+
+                          overflow:
+
+                          TextOverflow.ellipsis,
+
+
+                        ),
+
+
+                      ),
+
+
+
+
+
+                      trailing: IconButton(
+
+
+
+                        icon:
+
+                        const Icon(
+
+                          Icons.delete_outline,
+
+                        ),
+
+
+
+                        onPressed: () {
+
+
+                          _showDeleteDialog(
+
+                            context,
+
+                            ref,
+
+                            invention.id,
+
+                          );
+
+
+                        },
+
+
+
+                      ),
+
+
 
                     ),
-
-
-
-
-
-                    title: Text(
-
-
-                      invention.title,
-
-
-                      style: const TextStyle(
-
-
-                        fontWeight:
-                        FontWeight.bold,
-
-
-                      ),
-
-
-                    ),
-
-
-
-
-
-
-                    subtitle: Padding(
-
-
-                      padding:
-                      const EdgeInsets.only(
-                        top:8,
-                      ),
-
-
-
-                      child: Text(
-
-
-                        invention.description,
-
-
-                        maxLines:2,
-
-
-                        overflow:
-                        TextOverflow.ellipsis,
-
-
-                      ),
-
-
-                    ),
-
-
-
-
-
-                    trailing: IconButton(
-
-
-
-                      icon: const Icon(
-
-                        Icons.delete_outline,
-
-                      ),
-
-
-
-                      onPressed: () async {
-
-
-                        await ref
-                            .read(
-                          inventionStateProvider
-                              .notifier,
-                        )
-                            .deleteInvention(
-
-                          invention.id,
-
-                        );
-
-
-                      },
-
-
-                    ),
-
 
 
                   ),
@@ -263,7 +298,7 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-              builder: (context) =>
+              builder: (_) =>
 
               const AddInventionPage(),
 
@@ -282,16 +317,15 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-        icon: const Icon(
-
-          Icons.add,
-
-        ),
+        icon:
+        const Icon(Icons.add),
 
 
 
 
-        label: const Text(
+        label:
+
+        const Text(
 
           'ثبت اختراع',
 
@@ -301,6 +335,127 @@ class InventionsPage extends ConsumerWidget {
 
       ),
 
+
+
+    );
+
+
+  }
+
+
+
+
+  void _showDeleteDialog(
+
+      BuildContext context,
+
+      WidgetRef ref,
+
+      String id,
+
+      ) {
+
+
+    showDialog(
+
+      context: context,
+
+      builder: (context) {
+
+
+        return AlertDialog(
+
+
+          title:
+
+          const Text(
+
+            'حذف اختراع',
+
+          ),
+
+
+
+          content:
+
+          const Text(
+
+            'آیا مطمئن هستید؟',
+
+          ),
+
+
+
+          actions: [
+
+
+            TextButton(
+
+              onPressed: () {
+
+                Navigator.pop(context);
+
+              },
+
+              child:
+
+              const Text(
+
+                'انصراف',
+
+              ),
+
+            ),
+
+
+
+
+            FilledButton(
+
+              onPressed: () async {
+
+
+                await ref
+
+                    .read(
+
+                  inventionStateProvider
+
+                      .notifier,
+
+                )
+
+                    .deleteInvention(id);
+
+
+
+                if(context.mounted){
+
+                  Navigator.pop(context);
+
+                }
+
+
+              },
+
+              child:
+
+              const Text(
+
+                'حذف',
+
+              ),
+
+            ),
+
+
+          ],
+
+
+        );
+
+
+      },
 
 
     );
@@ -327,7 +482,6 @@ class _EmptyInventionsView extends StatelessWidget {
   Widget build(BuildContext context) {
 
 
-
     return Center(
 
 
@@ -335,14 +489,17 @@ class _EmptyInventionsView extends StatelessWidget {
 
 
         padding:
-        const EdgeInsets.all(32),
-      child: Column(
 
+        const EdgeInsets.all(32),
+
+
+
+        child: Column(
 
 
           mainAxisAlignment:
-          MainAxisAlignment.center,
 
+          MainAxisAlignment.center,
 
 
 
@@ -359,7 +516,6 @@ class _EmptyInventionsView extends StatelessWidget {
               size:88,
 
 
-
               color:
 
               Theme.of(context)
@@ -369,9 +525,7 @@ class _EmptyInventionsView extends StatelessWidget {
                   .primary,
 
 
-
             ),
-
 
 
 
@@ -381,27 +535,24 @@ class _EmptyInventionsView extends StatelessWidget {
 
 
 
-
             const Text(
-
 
 
               'هنوز اختراعی ثبت نشده است',
 
 
 
-              style: TextStyle(
+              style:
 
+              TextStyle(
 
 
                 fontSize:20,
 
 
-
                 fontWeight:
 
                 FontWeight.bold,
-
 
 
               ),
@@ -413,9 +564,7 @@ class _EmptyInventionsView extends StatelessWidget {
               TextAlign.center,
 
 
-
             ),
-
 
 
 
@@ -425,18 +574,16 @@ class _EmptyInventionsView extends StatelessWidget {
 
 
 
-
-
             Text(
-
 
 
               'با انتخاب «ثبت اختراع»، اولین ایده یا اختراع خود را به InvenShare اضافه کنید.',
 
 
 
-              style: TextStyle(
+              style:
 
+              TextStyle(
 
 
                 color:
@@ -448,16 +595,13 @@ class _EmptyInventionsView extends StatelessWidget {
                     .onSurfaceVariant,
 
 
-
               ),
-
 
 
 
               textAlign:
 
               TextAlign.center,
-
 
 
             ),
