@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'add_invention_page.dart';
 import 'invention_details_page.dart';
+
 import '../providers/invention_provider.dart';
+import '../providers/invention_filter_provider.dart';
+
 
 
 class InventionsPage extends ConsumerWidget {
@@ -13,6 +16,7 @@ class InventionsPage extends ConsumerWidget {
   });
 
 
+
   @override
   Widget build(
       BuildContext context,
@@ -20,97 +24,330 @@ class InventionsPage extends ConsumerWidget {
       ) {
 
 
+
     final inventions =
-        ref.watch(inventionStateProvider);
+        ref.watch(filteredInventionsProvider);
 
 
 
     return Scaffold(
 
 
+
       appBar: AppBar(
+
 
         title: const Text(
 
           'InvenShare',
 
           style: TextStyle(
+
             fontWeight: FontWeight.bold,
+
           ),
 
         ),
+
 
       ),
 
 
 
 
-      body: inventions.isEmpty
+      body: Column(
 
 
-          ? const _EmptyInventionsView()
-
-
-
-          : ListView.separated(
-
-
-              padding: const EdgeInsets.all(16),
-
-
-              itemCount: inventions.length,
-
-
-              separatorBuilder: (_, __) =>
-                  const SizedBox(height:12),
+        children: [
 
 
 
+          Padding(
 
-              itemBuilder: (context,index){
+            padding:
+            const EdgeInsets.all(16),
+
+
+            child: Column(
+
+              children: [
+
+
+
+                TextField(
+
+
+                  decoration: InputDecoration(
+
+
+                    hintText:
+                    'جستجوی اختراع...',
+
+
+                    prefixIcon:
+                    const Icon(
+
+                      Icons.search,
+
+                    ),
+
+
+
+                    border:
+                    OutlineInputBorder(
+
+                      borderRadius:
+                      BorderRadius.circular(16),
+
+                    ),
+
+
+                  ),
+
+
+
+                  onChanged: (value) {
+
+
+                    ref
+
+                        .read(
+
+                      inventionSearchProvider
+                          .notifier,
+
+                    )
+
+                        .state = value;
+
+
+                  },
+
+
+                ),
+
+
+
+
+                const SizedBox(height:12),
+
+
+
+
+                DropdownButtonFormField<String>(
+
+
+                  value:
+
+                  ref.watch(
+
+                      inventionCategoryProvider
+
+                  ),
+
+
+
+                  decoration:
+
+                  InputDecoration(
+
+
+                    labelText:
+                    'دسته‌بندی',
+
+
+
+                    border:
+                    OutlineInputBorder(
+
+
+                      borderRadius:
+                      BorderRadius.circular(16),
+
+
+                    ),
+
+
+                  ),
+
+
+
+
+                  items:
+
+                  const [
+
+
+                    'همه',
+
+                    'فناوری',
+
+                    'پزشکی',
+
+                    'رباتیک',
+
+                    'هوش مصنوعی',
+
+                    'معماری',
+
+                  ]
+
+                      .map(
+
+                        (category) =>
+
+                        DropdownMenuItem(
+
+                          value: category,
+
+                          child:
+                          Text(category),
+
+                        ),
+
+                  )
+
+                      .toList(),
+
+
+
+
+                  onChanged: (value) {
+
+
+                    if(value != null){
+
+
+                      ref
+
+                          .read(
+
+                        inventionCategoryProvider
+                            .notifier,
+
+                      )
+
+                          .state = value;
+
+
+                    }
+
+
+                  },
+
+
+                ),
+
+
+
+              ],
+
+
+            ),
+
+
+          ),
+
+
+
+
+
+          Expanded(
+
+
+
+            child: inventions.isEmpty
+
+
+
+                ? const _EmptyInventionsView()
+
+
+
+
+                : ListView.separated(
+
+
+
+              padding:
+              const EdgeInsets.symmetric(
+                horizontal:16,
+              ),
+
+
+
+              itemCount:
+              inventions.length,
+
+
+
+
+              separatorBuilder: (_,__) =>
+
+              const SizedBox(
+                height:12,
+              ),
+
+
+
+
+
+              itemBuilder:
+                  (context,index){
+
 
 
                 final invention =
-                    inventions[index];
+                inventions[index];
 
 
 
                 return Card(
 
 
-                  elevation: 1,
+
+                  elevation:1,
+
 
 
                   clipBehavior:
                   Clip.antiAlias,
+        child: InkWell(
 
-
-
-                  child: InkWell(
 
 
                     onTap: () {
 
 
+
                       Navigator.push(
+
 
                         context,
 
+
                         MaterialPageRoute(
 
+
                           builder: (_) =>
+
                               InventionDetailsPage(
 
-                                invention: invention,
+                                invention:
+                                invention,
 
                               ),
 
+
                         ),
+
 
                       );
 
 
                     },
+
+
 
 
 
@@ -124,32 +361,19 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-                      leading: CircleAvatar(
+                      leading:
+
+                      CircleAvatar(
 
 
-                        backgroundColor:
+                        child:
 
-                        Theme.of(context)
-
-                            .colorScheme
-
-                            .primaryContainer,
-
-
-
-                        child: Icon(
+                        const Icon(
 
                           Icons.lightbulb_outline,
 
-                          color:
-
-                          Theme.of(context)
-
-                              .colorScheme
-
-                              .primary,
-
                         ),
+
 
                       ),
 
@@ -157,27 +381,20 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-                      title: Text(
+                      title:
 
+                      Text(
 
                         invention.title,
-
 
                         style:
 
                         const TextStyle(
 
-
                           fontWeight:
-
                           FontWeight.bold,
 
-
-                          fontSize:16,
-
-
                         ),
-
 
                       ),
 
@@ -185,36 +402,17 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+                      subtitle:
 
-                      subtitle: Padding(
+                      Text(
 
+                        invention.description,
 
-                        padding:
+                        maxLines:2,
 
-                        const EdgeInsets.only(
+                        overflow:
 
-                          top:8,
-
-                        ),
-
-
-
-                        child: Text(
-
-
-                          invention.description,
-
-
-                          maxLines:2,
-
-
-                          overflow:
-
-                          TextOverflow.ellipsis,
-
-
-                        ),
-
+                        TextOverflow.ellipsis,
 
                       ),
 
@@ -222,7 +420,9 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-                      trailing: IconButton(
+                      trailing:
+
+                      IconButton(
 
 
 
@@ -233,6 +433,7 @@ class InventionsPage extends ConsumerWidget {
                           Icons.delete_outline,
 
                         ),
+
 
 
 
@@ -275,6 +476,18 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+          ),
+
+
+
+        ],
+
+
+
+      ),
+
+
+
 
 
 
@@ -287,37 +500,27 @@ class InventionsPage extends ConsumerWidget {
         onPressed: () {
 
 
-
           Navigator.push(
-
 
             context,
 
-
             MaterialPageRoute(
-
-
 
               builder: (_) =>
 
               const AddInventionPage(),
 
-
-
             ),
 
-
-
           );
-
 
 
         },
 
 
 
-
         icon:
+
         const Icon(Icons.add),
 
 
@@ -336,11 +539,11 @@ class InventionsPage extends ConsumerWidget {
       ),
 
 
-
     );
 
 
   }
+
 
 
 
@@ -356,112 +559,119 @@ class InventionsPage extends ConsumerWidget {
       ) {
 
 
+
     showDialog(
+
 
       context: context,
 
-      builder: (context) {
+
+      builder: (_) => AlertDialog(
 
 
-        return AlertDialog(
+
+        title:
+
+        const Text(
+
+          'حذف اختراع',
+
+        ),
 
 
-          title:
 
-          const Text(
 
-            'حذف اختراع',
+        content:
+
+        const Text(
+
+          'آیا مطمئن هستید؟',
+
+        ),
+
+
+
+
+        actions: [
+
+
+
+          TextButton(
+
+            onPressed: () =>
+
+                Navigator.pop(context),
+
+
+            child:
+
+            const Text(
+
+              'انصراف',
+
+            ),
 
           ),
 
 
 
-          content:
 
-          const Text(
-
-            'آیا مطمئن هستید؟',
-
-          ),
+          FilledButton(
 
 
+            onPressed: () async {
 
-          actions: [
+
+              await ref
+
+                  .read(
+
+                inventionStateProvider
+                    .notifier,
+
+              )
+
+                  .deleteInvention(id);
 
 
-            TextButton(
 
-              onPressed: () {
+              if(context.mounted){
 
                 Navigator.pop(context);
 
-              },
-
-              child:
-
-              const Text(
-
-                'انصراف',
-
-              ),
-
-            ),
+              }
 
 
+            },
 
 
-            FilledButton(
+            child:
 
-              onPressed: () async {
+            const Text(
 
-
-                await ref
-
-                    .read(
-
-                  inventionStateProvider
-
-                      .notifier,
-
-                )
-
-                    .deleteInvention(id);
-
-
-
-                if(context.mounted){
-
-                  Navigator.pop(context);
-
-                }
-
-
-              },
-
-              child:
-
-              const Text(
-
-                'حذف',
-
-              ),
+              'حذف',
 
             ),
 
 
-          ],
+
+          ),
 
 
-        );
+
+        ],
 
 
-      },
+
+      ),
 
 
     );
 
 
+
   }
+
 
 
 }
@@ -484,141 +694,21 @@ class _EmptyInventionsView extends StatelessWidget {
 
     return Center(
 
+      child:
 
-      child: Padding(
+      Text(
 
+        'اختراعی پیدا نشد',
 
-        padding:
+        style:
 
-        const EdgeInsets.all(32),
+        Theme.of(context)
 
+            .textTheme
 
-
-        child: Column(
-
-
-          mainAxisAlignment:
-
-          MainAxisAlignment.center,
-
-
-
-          children: [
-
-
-
-            Icon(
-
-
-              Icons.lightbulb_outline_rounded,
-
-
-              size:88,
-
-
-              color:
-
-              Theme.of(context)
-
-                  .colorScheme
-
-                  .primary,
-
-
-            ),
-
-
-
-
-            const SizedBox(height:20),
-
-
-
-
-            const Text(
-
-
-              'هنوز اختراعی ثبت نشده است',
-
-
-
-              style:
-
-              TextStyle(
-
-
-                fontSize:20,
-
-
-                fontWeight:
-
-                FontWeight.bold,
-
-
-              ),
-
-
-
-              textAlign:
-
-              TextAlign.center,
-
-
-            ),
-
-
-
-
-            const SizedBox(height:8),
-
-
-
-
-            Text(
-
-
-              'با انتخاب «ثبت اختراع»، اولین ایده یا اختراع خود را به InvenShare اضافه کنید.',
-
-
-
-              style:
-
-              TextStyle(
-
-
-                color:
-
-                Theme.of(context)
-
-                    .colorScheme
-
-                    .onSurfaceVariant,
-
-
-              ),
-
-
-
-              textAlign:
-
-              TextAlign.center,
-
-
-            ),
-
-
-
-          ],
-
-
-
-        ),
-
-
+            .titleLarge,
 
       ),
-
-
 
     );
 
