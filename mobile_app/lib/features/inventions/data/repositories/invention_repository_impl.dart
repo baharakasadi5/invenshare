@@ -1,26 +1,46 @@
 // lib/features/inventions/data/repositories/invention_repository_impl.dart
 
-import 'package:hive/hive.dart';
 import '../../domain/entities/invention.dart';
 import '../../domain/repositories/invention_repository.dart';
 
-class InventionRepositoryImpl implements InventionRepository {
-  final Box<Invention> _box;
 
-  InventionRepositoryImpl(this._box);
+class InventionRepositoryImpl implements InventionRepository {
+
+
+  final List<Invention> _inventions = [];
+
 
   @override
   Future<List<Invention>> getInventions() async {
-    return _box.values.toList();
+    return _inventions;
   }
+
 
   @override
   Future<void> addInvention(Invention invention) async {
-    await _box.put(invention.id, invention);
+    _inventions.add(invention);
   }
+
 
   @override
   Future<void> deleteInvention(String id) async {
-    await _box.delete(id);
+    _inventions.removeWhere(
+      (item) => item.id == id,
+    );
   }
+
+
+  @override
+  Future<void> updateInvention(Invention invention) async {
+
+    final index = _inventions.indexWhere(
+      (item) => item.id == invention.id,
+    );
+
+    if (index != -1) {
+      _inventions[index] = invention;
+    }
+
+  }
+
 }
