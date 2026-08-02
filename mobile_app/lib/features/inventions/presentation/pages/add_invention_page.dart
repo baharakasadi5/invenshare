@@ -1,6 +1,3 @@
-// lib/features/inventions/presentation/pages/add_invention_page.dart
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -32,6 +29,10 @@ class _AddInventionPageState
 
   final descriptionController = TextEditingController();
 
+  final categoryController = TextEditingController();
+
+  final inventorController = TextEditingController();
+
 
 
   @override
@@ -40,6 +41,10 @@ class _AddInventionPageState
     titleController.dispose();
 
     descriptionController.dispose();
+
+    categoryController.dispose();
+
+    inventorController.dispose();
 
     super.dispose();
 
@@ -75,7 +80,29 @@ class _AddInventionPageState
       description:
       descriptionController.text.trim(),
 
+
+      category:
+      categoryController.text.trim().isEmpty
+          ? 'سایر'
+          : categoryController.text.trim(),
+
+
+      inventorName:
+      inventorController.text.trim().isEmpty
+          ? 'ناشناس'
+          : inventorController.text.trim(),
+
+
       createdAt: DateTime.now(),
+
+
+      aiAnalysis: '',
+
+
+      status: 'ثبت اولیه',
+
+
+      images: [],
 
     );
 
@@ -99,6 +126,45 @@ class _AddInventionPageState
 
 
 
+  Widget buildField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    int maxLines = 1,
+  }){
+
+    return TextField(
+
+      controller: controller,
+
+      maxLines: maxLines,
+
+
+      decoration: InputDecoration(
+
+        labelText: label,
+
+
+        prefixIcon: Icon(icon),
+
+
+        border: OutlineInputBorder(
+
+          borderRadius:
+          BorderRadius.circular(16),
+
+        ),
+
+      ),
+
+    );
+
+  }
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -115,9 +181,10 @@ class _AddInventionPageState
 
 
 
-      body: Padding(
+      body: SingleChildScrollView(
 
-        padding: const EdgeInsets.all(20),
+        padding:
+        const EdgeInsets.all(20),
 
 
         child: Column(
@@ -125,68 +192,63 @@ class _AddInventionPageState
           children: [
 
 
-            TextField(
+            buildField(
 
-              controller: titleController,
+              controller:titleController,
 
-              decoration: InputDecoration(
+              label:'عنوان اختراع',
 
-                labelText: 'عنوان اختراع',
-
-                prefixIcon:
-                const Icon(
-                  Icons.lightbulb_outline,
-                ),
-
-                border:
-                OutlineInputBorder(
-
-                  borderRadius:
-                  BorderRadius.circular(16),
-
-                ),
-
-              ),
+              icon:Icons.lightbulb_outline,
 
             ),
 
 
 
-            const SizedBox(height:20),
+            const SizedBox(height:16),
 
 
 
+            buildField(
 
-            TextField(
+              controller:categoryController,
 
-              controller: descriptionController,
+              label:'دسته‌بندی',
+
+              icon:Icons.category_outlined,
+
+            ),
+
+
+
+            const SizedBox(height:16),
+
+
+
+            buildField(
+
+              controller:inventorController,
+
+              label:'نام مخترع',
+
+              icon:Icons.person_outline,
+
+            ),
+
+
+
+            const SizedBox(height:16),
+
+
+
+            buildField(
+
+              controller:descriptionController,
+
+              label:'توضیحات اختراع',
+
+              icon:Icons.description_outlined,
 
               maxLines:5,
-
-
-              decoration: InputDecoration(
-
-                labelText:
-                'توضیحات اختراع',
-
-                alignLabelWithHint:true,
-
-
-                prefixIcon:
-                const Icon(
-                  Icons.description_outlined,
-                ),
-
-
-                border:
-                OutlineInputBorder(
-
-                  borderRadius:
-                  BorderRadius.circular(16),
-
-                ),
-
-              ),
 
             ),
 
@@ -196,29 +258,23 @@ class _AddInventionPageState
 
 
 
-
             SizedBox(
 
               width:double.infinity,
-
 
               height:55,
 
 
               child: FilledButton.icon(
 
-
                 icon:
-                const Icon(
-                  Icons.save,
-                ),
+                const Icon(Icons.save),
 
 
                 label:
                 const Text(
                   'ذخیره اختراع',
                 ),
-
 
 
                 onPressed:

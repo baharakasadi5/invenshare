@@ -9,6 +9,7 @@ import 'features/inventions/domain/entities/invention.dart';
 import 'features/inventions/presentation/pages/inventions_page.dart';
 
 
+
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,41 +19,63 @@ Future<void> main() async {
   await Hive.initFlutter();
 
 
+
   // Register Hive Adapter safely
   if (!Hive.isAdapterRegistered(0)) {
+
     Hive.registerAdapter(InventionAdapter());
+
   }
 
 
+
+
   // Open local database
-  await Hive.openBox<Invention>('inventions');
+  // اطلاعات کاربر حفظ می‌شود
+  await Hive.openBox<Invention>(
+    'inventions',
+  );
+
 
 
   runApp(
+
     const ProviderScope(
+
       child: InvenShareApp(),
+
     ),
+
   );
+
 }
+
+
 
 
 
 class InvenShareApp extends StatelessWidget {
 
-  const InvenShareApp({super.key});
+
+  const InvenShareApp({
+    super.key,
+  });
+
 
 
   @override
   Widget build(BuildContext context) {
 
+
     return MaterialApp(
 
       title: 'InvenShare',
 
+
       debugShowCheckedModeBanner: false,
 
 
-      // Persian localization
+
       localizationsDelegates: const [
 
         GlobalMaterialLocalizations.delegate,
@@ -64,14 +87,18 @@ class InvenShareApp extends StatelessWidget {
       ],
 
 
+
       supportedLocales: const [
 
-        Locale('fa', 'IR'),
+        Locale('fa','IR'),
+
+        Locale('en','US'),
 
       ],
 
 
-      locale: const Locale('fa', 'IR'),
+
+      locale: const Locale('fa','IR'),
 
 
 
@@ -83,6 +110,7 @@ class InvenShareApp extends StatelessWidget {
         fontFamily: 'Vazir',
 
 
+
         colorScheme: ColorScheme.fromSeed(
 
           seedColor: Color(0xFF5B38B5),
@@ -92,7 +120,10 @@ class InvenShareApp extends StatelessWidget {
         ),
 
 
-        scaffoldBackgroundColor: Color(0xFFF9F9FC),
+
+        scaffoldBackgroundColor:
+
+        Color(0xFFF9F9FC),
 
 
 
@@ -106,11 +137,13 @@ class InvenShareApp extends StatelessWidget {
 
         ),
 
+
       ),
 
 
 
       home: const InventionsPage(),
+
 
     );
 

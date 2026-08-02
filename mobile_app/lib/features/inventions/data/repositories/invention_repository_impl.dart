@@ -1,6 +1,5 @@
 // lib/features/inventions/data/repositories/invention_repository_impl.dart
 
-
 import '../../domain/entities/invention.dart';
 import '../../domain/repositories/invention_repository.dart';
 
@@ -24,9 +23,9 @@ class InventionRepositoryImpl
 
 
   @override
-  Future<List<Invention>> getInventions() {
+  Future<List<Invention>> getInventions() async {
 
-    return localSource.getInventions();
+    return await localSource.getInventions();
 
   }
 
@@ -35,9 +34,9 @@ class InventionRepositoryImpl
   @override
   Future<void> addInvention(
     Invention invention,
-  ) {
+  ) async {
 
-    return localSource.addInvention(
+    await localSource.addInvention(
       invention,
     );
 
@@ -48,9 +47,9 @@ class InventionRepositoryImpl
   @override
   Future<void> deleteInvention(
     String id,
-  ) {
+  ) async {
 
-    return localSource.deleteInvention(
+    await localSource.deleteInvention(
       id,
     );
 
@@ -61,9 +60,9 @@ class InventionRepositoryImpl
   @override
   Future<void> updateInvention(
     Invention invention,
-  ) {
+  ) async {
 
-    return localSource.updateInvention(
+    await localSource.updateInvention(
       invention,
     );
 

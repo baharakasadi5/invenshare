@@ -13,36 +13,59 @@ import '../../data/sources/invention_local_source.dart';
 
 
 
-// دسترسی به Hive Box
-final inventionsBoxProvider = Provider<Box<Invention>>((ref) {
 
-  return Hive.box<Invention>('inventions');
+
+// Hive Box Provider
+
+final inventionsBoxProvider =
+Provider<Box<Invention>>((ref) {
+
+  return Hive.box<Invention>(
+    'inventions',
+  );
 
 });
 
 
 
 
-// ساخت Local Source
+
+
+// Local Data Source Provider
+
 final inventionLocalSourceProvider =
-    Provider<InventionLocalSource>((ref) {
+Provider<InventionLocalSource>((ref) {
 
-  final box = ref.watch(inventionsBoxProvider);
 
-  return InventionLocalSource(box);
+  final box =
+      ref.watch(inventionsBoxProvider);
+
+
+
+  return InventionLocalSource(
+    box,
+  );
+
 
 });
 
 
 
 
-// اتصال Repository به برنامه
+
+
+
+// Repository Provider
+
 final inventionRepositoryProvider =
-    Provider<InventionRepository>((ref) {
+Provider<InventionRepository>((ref) {
 
 
   final localSource =
-      ref.watch(inventionLocalSourceProvider);
+      ref.watch(
+        inventionLocalSourceProvider,
+      );
+
 
 
   return InventionRepositoryImpl(
@@ -56,12 +79,19 @@ final inventionRepositoryProvider =
 
 
 
-// مدیریت وضعیت لیست اختراعات
-class InventionNotifier 
+
+
+
+
+// State Controller
+
+class InventionNotifier
     extends StateNotifier<List<Invention>> {
 
 
+
   final InventionRepository repository;
+
 
 
 
@@ -77,17 +107,34 @@ class InventionNotifier
 
 
 
+
+
   Future<void> loadInventions() async {
 
 
-    final inventions =
-        await repository.getInventions();
+    try {
 
 
-    state = inventions;
+      final result =
+          await repository.getInventions();
+
+
+
+      state = result;
+
+
+
+    } catch (e) {
+
+
+      state = [];
+
+    }
 
 
   }
+
+
 
 
 
@@ -99,9 +146,11 @@ class InventionNotifier
   ) async {
 
 
+
     await repository.addInvention(
       invention,
     );
+
 
 
     state = [
@@ -120,6 +169,9 @@ class InventionNotifier
 
 
 
+
+
+
   Future<void> deleteInvention(
     String id,
   ) async {
@@ -130,6 +182,7 @@ class InventionNotifier
     );
 
 
+
     state = state
         .where(
           (item) => item.id != id,
@@ -137,7 +190,11 @@ class InventionNotifier
         .toList();
 
 
+
   }
+
+
+
 
 
 
@@ -149,32 +206,51 @@ class InventionNotifier
   ) async {
 
 
+
     await repository.updateInvention(
       invention,
     );
 
 
-    final updatedList =
-        state.map((item) {
+
+    state = state.map(
+      (item) {
 
 
-      if (item.id == invention.id) {
+        if(item.id == invention.id){
 
-        return invention;
+          return invention;
 
-      }
-
-
-      return item;
+        }
 
 
-    }).toList();
+        return item;
 
 
-    state = updatedList;
+      },
+
+    ).toList();
+
 
 
   }
+
+
+
+
+
+
+
+
+
+  Future<void> refresh() async {
+
+
+    await loadInventions();
+
+
+  }
+
 
 
 }
@@ -184,16 +260,22 @@ class InventionNotifier
 
 
 
-// Provider اصلی برای UI
+
+
+
+// Main Provider
+
 final inventionStateProvider =
-    StateNotifierProvider<
-        InventionNotifier,
-        List<Invention>
-    >((ref) {
+StateNotifierProvider<
+    InventionNotifier,
+    List<Invention>
+>((ref) {
 
 
   final repository =
-      ref.watch(inventionRepositoryProvider);
+      ref.watch(
+        inventionRepositoryProvider,
+      );
 
 
 

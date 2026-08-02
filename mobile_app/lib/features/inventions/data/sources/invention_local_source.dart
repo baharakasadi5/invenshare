@@ -5,48 +5,111 @@ import 'package:hive/hive.dart';
 import '../../domain/entities/invention.dart';
 
 
+
 class InventionLocalSource {
+
 
   final Box<Invention> box;
 
 
-  InventionLocalSource(this.box);
+
+  InventionLocalSource(
+    this.box,
+  );
 
 
 
   Future<List<Invention>> getInventions() async {
 
-    return box.values.toList();
+    try {
+
+      return box.values.toList();
+
+    } catch (e) {
+
+      throw Exception(
+        'خطا در خواندن اختراعات: $e',
+      );
+
+    }
 
   }
 
 
 
-  Future<void> addInvention(Invention invention) async {
+  Future<void> addInvention(
+    Invention invention,
+  ) async {
 
-    await box.put(
-      invention.id,
-      invention,
-    );
+    try {
+
+      await box.put(
+        invention.id,
+        invention,
+      );
+
+
+      await box.flush();
+
+
+    } catch (e) {
+
+      throw Exception(
+        'خطا در ذخیره اختراع: $e',
+      );
+
+    }
 
   }
 
 
 
-  Future<void> deleteInvention(String id) async {
+  Future<void> deleteInvention(
+    String id,
+  ) async {
 
-    await box.delete(id);
+    try {
+
+      await box.delete(id);
+
+
+      await box.flush();
+
+
+    } catch (e) {
+
+      throw Exception(
+        'خطا در حذف اختراع: $e',
+      );
+
+    }
 
   }
 
 
 
-  Future<void> updateInvention(Invention invention) async {
+  Future<void> updateInvention(
+    Invention invention,
+  ) async {
 
-    await box.put(
-      invention.id,
-      invention,
-    );
+    try {
+
+      await box.put(
+        invention.id,
+        invention,
+      );
+
+
+      await box.flush();
+
+
+    } catch (e) {
+
+      throw Exception(
+        'خطا در ویرایش اختراع: $e',
+      );
+
+    }
 
   }
 
