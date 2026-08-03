@@ -1,19 +1,13 @@
-// lib/features/favorites/presentation/pages/favorites_page.dart
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/app_localizations.dart';
 
 import '../providers/favorite_provider.dart';
-
 
 import '../../../inventions/presentation/providers/invention_provider.dart';
 
 import '../../../inventions/presentation/pages/invention_details_page.dart';
-
-
-
 
 
 
@@ -30,7 +24,6 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
-
   @override
   Widget build(
 
@@ -42,13 +35,21 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+    final l10n =
+
+    AppLocalizations.of(context)!;
+
+
+
+
+
     final favoriteIds =
 
-        ref.watch(
+    ref.watch(
 
-          favoriteProvider,
+      favoriteProvider,
 
-        );
+    );
 
 
 
@@ -56,11 +57,11 @@ class FavoritesPage extends ConsumerWidget {
 
     final inventions =
 
-        ref.watch(
+    ref.watch(
 
-          inventionStateProvider,
+      inventionStateProvider,
 
-        );
+    );
 
 
 
@@ -91,7 +92,6 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
-
     return Scaffold(
 
 
@@ -103,9 +103,9 @@ class FavoritesPage extends ConsumerWidget {
 
         title:
 
-        const Text(
+        Text(
 
-          'علاقه‌مندی‌ها',
+          l10n.favorites,
 
         ),
 
@@ -120,13 +120,16 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+
       body:
 
       favoriteInventions.isEmpty
 
 
 
-          ? const Center(
+          ?
+
+      Center(
 
 
 
@@ -134,7 +137,7 @@ class FavoritesPage extends ConsumerWidget {
 
         Text(
 
-          'هنوز اختراعی به علاقه‌مندی‌ها اضافه نشده است',
+          l10n.noFavorites,
 
         ),
 
@@ -144,7 +147,9 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
-          : ListView.separated(
+          :
+
+      ListView.separated(
 
 
 
@@ -153,6 +158,7 @@ class FavoritesPage extends ConsumerWidget {
         padding:
 
         const EdgeInsets.all(16),
+
 
 
 
@@ -175,6 +181,7 @@ class FavoritesPage extends ConsumerWidget {
           height:12,
 
         ),
+
 
 
 
@@ -208,6 +215,8 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+
+
               leading:
 
               const CircleAvatar(
@@ -227,6 +236,8 @@ class FavoritesPage extends ConsumerWidget {
 
 
               ),
+
+
 
 
 
@@ -388,17 +399,17 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
-                        InventionDetailsPage(
+                    InventionDetailsPage(
 
 
 
-                          invention:
+                      invention:
 
-                          invention,
+                      invention,
 
 
 
-                        ),
+                    ),
 
 
 

@@ -1,0 +1,66 @@
+{
+  "appTitle": "InvenShare",
+
+  "home": "Home",
+  "myInventions": "My Inventions",
+  "addInvention": "Add Invention",
+  "favorites": "Favorites",
+  "details": "Invention Details",
+
+  "edit": "Edit",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "save": "Save",
+
+  "description": "Description",
+  "category": "Category",
+  "inventorName": "Inventor Name",
+  "status": "Status",
+  "aiAnalysis": "AI Analysis",
+
+  "settings": "Settings",
+  "language": "Language",
+  "about": "About",
+
+  "searchInventions": "Search inventions...",
+  "all": "All",
+  "noInventionFound": "No invention found",
+
+  "deleteInvention": "Delete invention",
+  "deleteConfirm": "Are you sure?",
+
+  "noFavorites": "No invention has been added to favorites yet",
+
+  "enterTitle": "Please enter invention title",
+  "other": "Other",
+  "unknown": "Unknown",
+  "initialRegistration": "Initial registration",
+
+  "addNewInvention": "Add new invention",
+  "inventionTitle": "Invention title",
+  "inventionDescription": "Invention description",
+  "saveInvention": "Save invention",
+
+  "date": "Registration Date",
+  "images": "Invention Images",
+  "noImages": "No image has been added",
+
+  "favorite": "Favorite",
+  "editInvention": "Edit Invention",
+
+  "saveChanges": "Save Changes",
+  "editInventionTitle": "Invention Title",
+  "editInventionDescription": "Invention Description",
+
+  "darkMode": "Dark Mode",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+
+  "appDescription": "A platform for inventors and innovative ideas",
+
+  "version": "Version",
+
+  "technology": "Technology",
+
+  "developer": "Developer"
+}

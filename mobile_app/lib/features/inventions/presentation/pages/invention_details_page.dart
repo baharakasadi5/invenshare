@@ -1,20 +1,13 @@
-// lib/features/inventions/presentation/pages/invention_details_page.dart
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/app_localizations.dart';
 
 import '../../domain/entities/invention.dart';
 
-
-// مسیر جدید Favorite Provider
 import '../../../favorites/presentation/providers/favorite_provider.dart';
 
-
 import 'edit_invention_page.dart';
-
-
 
 
 
@@ -48,6 +41,11 @@ class InventionDetailsPage extends ConsumerWidget {
 
 
 
+    final l10n =
+    AppLocalizations.of(context)!;
+
+
+
     final isFavorite =
 
         ref.watch(favoriteProvider)
@@ -70,9 +68,11 @@ class InventionDetailsPage extends ConsumerWidget {
 
 
 
-        title: const Text(
+        title:
 
-          'جزئیات اختراع',
+        Text(
+
+          l10n.details,
 
         ),
 
@@ -115,7 +115,7 @@ class InventionDetailsPage extends ConsumerWidget {
 
             tooltip:
 
-            'علاقه‌مندی',
+            l10n.favorite,
 
 
 
@@ -167,7 +167,7 @@ class InventionDetailsPage extends ConsumerWidget {
 
             tooltip:
 
-            'ویرایش اختراع',
+            l10n.editInvention,
 
 
 
@@ -299,7 +299,7 @@ class InventionDetailsPage extends ConsumerWidget {
 
               icon: Icons.description_outlined,
 
-              title: 'توضیحات',
+              title: l10n.description,
 
               value: invention.description,
 
@@ -312,7 +312,7 @@ class InventionDetailsPage extends ConsumerWidget {
 
               icon: Icons.category_outlined,
 
-              title: 'دسته‌بندی',
+              title: l10n.category,
 
               value: invention.category,
 
@@ -326,7 +326,7 @@ class InventionDetailsPage extends ConsumerWidget {
 
               icon: Icons.person_outline,
 
-              title: 'نام مخترع',
+              title: l10n.inventorName,
 
               value: invention.inventorName,
 
@@ -340,7 +340,7 @@ class InventionDetailsPage extends ConsumerWidget {
 
               icon: Icons.calendar_today_outlined,
 
-              title: 'تاریخ ثبت',
+              title: l10n.date,
 
               value:
 
@@ -356,7 +356,7 @@ class InventionDetailsPage extends ConsumerWidget {
 
               icon: Icons.info_outline,
 
-              title: 'وضعیت',
+              title: l10n.status,
 
               value: invention.status,
 
@@ -370,7 +370,7 @@ class InventionDetailsPage extends ConsumerWidget {
 
               icon: Icons.auto_awesome,
 
-              title: 'تحلیل هوش مصنوعی',
+              title: l10n.aiAnalysis,
 
               value: invention.aiAnalysis,
 
@@ -386,11 +386,11 @@ class InventionDetailsPage extends ConsumerWidget {
 
 
 
-            const Text(
+            Text(
 
-              'تصاویر اختراع',
+              l10n.images,
 
-              style: TextStyle(
+              style: const TextStyle(
 
                 fontSize:18,
 
@@ -411,9 +411,10 @@ class InventionDetailsPage extends ConsumerWidget {
 
 
             if (invention.images.isEmpty)
-              const Text(
 
-                'تصویری ثبت نشده است',
+            Text(
+
+                l10n.noImages,
 
               )
 
@@ -495,13 +496,6 @@ class InventionDetailsPage extends ConsumerWidget {
                           alignment:
 
                           Alignment.center,
-
-
-
-
-                          color:
-
-                          Colors.grey.shade200,
 
 
 

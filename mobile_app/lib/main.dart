@@ -1,30 +1,31 @@
-// lib/main.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'l10n/app_localizations.dart';
+
+import 'core/providers/locale_provider.dart';
+import 'core/providers/theme_provider.dart';
+import 'core/providers/color_provider.dart';
+import 'core/providers/font_provider.dart';
+
+import 'core/splash/splash_page.dart';
+
 import 'features/inventions/domain/entities/invention.dart';
 import 'features/favorites/data/models/favorite_model.dart';
-
-import 'features/inventions/presentation/pages/inventions_page.dart';
 
 
 
 Future<void> main() async {
 
+
   WidgetsFlutterBinding.ensureInitialized();
 
 
-
-  // Initialize Hive
   await Hive.initFlutter();
 
 
-
-
-  // Register Invention Adapter
 
   if (!Hive.isAdapterRegistered(0)) {
 
@@ -36,9 +37,6 @@ Future<void> main() async {
 
 
 
-
-  // Register Favorite Adapter
-
   if (!Hive.isAdapterRegistered(1)) {
 
     Hive.registerAdapter(
@@ -48,10 +46,6 @@ Future<void> main() async {
   }
 
 
-
-
-
-  // Open Hive Boxes
 
 
   await Hive.openBox<Invention>(
@@ -66,6 +60,11 @@ Future<void> main() async {
 
 
 
+  await Hive.openBox(
+    'settings',
+  );
+
+
 
 
   runApp(
@@ -78,13 +77,16 @@ Future<void> main() async {
 
   );
 
+
 }
 
 
 
 
 
-class InvenShareApp extends StatelessWidget {
+
+
+class InvenShareApp extends ConsumerWidget {
 
 
   const InvenShareApp({
@@ -94,115 +96,117 @@ class InvenShareApp extends StatelessWidget {
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+      BuildContext context,
+      WidgetRef ref,
+      ) {
+
+
+    final locale =
+    ref.watch(localeProvider);
+
+
+
+    final themeMode =
+    ref.watch(themeProvider);
+
+
+
+    final seedColor =
+    ref.watch(seedColorProvider);
+
+
+
+    final font =
+    ref.watch(fontProvider);
+
+
+
+
+
 
 
     return MaterialApp(
 
 
-      title: 'InvenShare',
+
+      debugShowCheckedModeBanner:
+      false,
 
 
 
-      debugShowCheckedModeBanner: false,
+      title:
+      'InvenShare',
 
 
 
 
-      localizationsDelegates: const [
+
+      locale:
+      locale,
+
+
+
+
+
+      localizationsDelegates:
+      const [
+
+
+        AppLocalizations.delegate,
+
 
         GlobalMaterialLocalizations.delegate,
 
+
         GlobalWidgetsLocalizations.delegate,
+
 
         GlobalCupertinoLocalizations.delegate,
 
-      ],
-
-
-
-
-      supportedLocales: const [
-
-        Locale('fa','IR'),
-
-        Locale('en','US'),
 
       ],
 
 
 
 
-      locale: const Locale(
-        'fa',
-        'IR',
+
+      supportedLocales:
+      AppLocalizations.supportedLocales,
+
+
+
+
+
+      theme:
+      createLightTheme(
+        seedColor,
+        font,
       ),
 
 
 
 
-      theme: ThemeData(
 
-
-        useMaterial3: true,
-
-
-
-        fontFamily: 'Vazir',
-
-
-
-
-        colorScheme: ColorScheme.fromSeed(
-
-
-          seedColor:
-          Color(0xFF5B38B5),
-
-
-          brightness:
-          Brightness.light,
-
-
-        ),
-
-
-
-
-        scaffoldBackgroundColor:
-
-        const Color(0xFFF9F9FC),
-
-
-
-
-        appBarTheme:
-
-        const AppBarTheme(
-
-
-          centerTitle: false,
-
-
-          elevation: 0,
-
-
-          backgroundColor:
-          Colors.transparent,
-
-
-        ),
-
-
-
+      darkTheme:
+      createDarkTheme(
+        seedColor,
+        font,
       ),
+
+
+
+
+
+      themeMode:
+      themeMode,
+
 
 
 
 
       home:
-
-      const InventionsPage(),
+      const SplashPage(),
 
 
 
@@ -210,6 +214,540 @@ class InvenShareApp extends StatelessWidget {
 
 
   }
+
+
+}
+
+
+
+
+
+
+
+
+
+ThemeData createLightTheme(
+    Color seedColor,
+    String font,
+    ) {
+
+
+
+  return ThemeData(
+
+
+
+    useMaterial3:
+    true,
+
+
+
+    fontFamily:
+    font,
+
+
+
+    colorScheme:
+    ColorScheme.fromSeed(
+
+
+
+      seedColor:
+      seedColor,
+
+
+
+      brightness:
+      Brightness.light,
+
+
+
+    ),
+
+
+
+
+
+    scaffoldBackgroundColor:
+    const Color(
+        0xffF8F8FC
+    ),
+
+
+
+
+
+    appBarTheme:
+    const AppBarTheme(
+
+
+      centerTitle:
+      true,
+
+
+      elevation:
+      0,
+
+
+      backgroundColor:
+      Colors.transparent,
+
+
+    ),
+
+
+
+
+
+
+    cardTheme:
+    CardThemeData(
+
+
+      elevation:
+      2,
+
+
+
+      margin:
+      const EdgeInsets.symmetric(
+        vertical:8,
+      ),
+
+
+
+      shape:
+      RoundedRectangleBorder(
+
+
+        borderRadius:
+        BorderRadius.circular(
+          18,
+        ),
+
+
+      ),
+
+
+    ),
+
+
+
+
+
+
+    inputDecorationTheme:
+    InputDecorationTheme(
+
+
+
+      filled:
+      true,
+
+
+
+      fillColor:
+      Colors.white,
+
+
+
+      border:
+      OutlineInputBorder(
+
+
+        borderRadius:
+        BorderRadius.circular(
+          16,
+        ),
+
+
+        borderSide:
+        BorderSide.none,
+
+
+      ),
+
+
+
+
+
+      enabledBorder:
+      OutlineInputBorder(
+
+
+        borderRadius:
+        BorderRadius.circular(
+          16,
+        ),
+
+
+        borderSide:
+        BorderSide.none,
+
+
+      ),
+
+
+
+
+
+      focusedBorder:
+      OutlineInputBorder(
+
+
+        borderRadius:
+        BorderRadius.circular(
+          16,
+        ),
+
+
+        borderSide:
+        BorderSide(
+
+          color:
+          seedColor,
+
+          width:
+          2,
+
+        ),
+
+
+      ),
+
+
+    ),
+
+
+
+
+
+
+    filledButtonTheme:
+    FilledButtonThemeData(
+
+
+      style:
+      FilledButton.styleFrom(
+
+
+
+        minimumSize:
+
+        const Size(
+          double.infinity,
+          55,
+        ),
+
+
+
+
+
+        shape:
+        RoundedRectangleBorder(
+
+
+          borderRadius:
+          BorderRadius.circular(
+            16,
+          ),
+
+
+        ),
+
+
+      ),
+
+
+    ),
+
+
+
+  );
+
+
+}
+
+
+
+
+
+
+
+
+
+ThemeData createDarkTheme(
+    Color seedColor,
+    String font,
+    ) {
+
+
+
+  return ThemeData(
+
+
+
+    useMaterial3:
+    true,
+
+
+
+    fontFamily:
+    font,
+
+
+
+    colorScheme:
+    ColorScheme.fromSeed(
+
+
+
+      seedColor:
+      seedColor,
+
+
+
+      brightness:
+      Brightness.dark,
+
+
+
+    ),
+
+
+
+
+
+    scaffoldBackgroundColor:
+    const Color(
+        0xff121212
+    ),
+
+
+
+
+
+    appBarTheme:
+    const AppBarTheme(
+
+
+
+      centerTitle:
+      true,
+
+
+
+      elevation:
+      0,
+
+
+
+      backgroundColor:
+      Colors.transparent,
+
+
+
+    ),
+
+
+
+
+
+    cardTheme:
+    CardThemeData(
+
+
+
+      elevation:
+      3,
+
+
+
+      color:
+      const Color(
+          0xff1E1E1E
+      ),
+
+
+
+
+
+      shape:
+      RoundedRectangleBorder(
+
+
+
+        borderRadius:
+        BorderRadius.circular(
+          18,
+        ),
+
+
+
+      ),
+
+
+
+    ),
+
+
+
+
+
+    inputDecorationTheme:
+    InputDecorationTheme(
+
+
+
+      filled:
+      true,
+
+
+
+      fillColor:
+      const Color(
+          0xff1E1E1E
+      ),
+
+
+
+
+
+      border:
+      OutlineInputBorder(
+
+
+
+        borderRadius:
+        BorderRadius.circular(
+          16,
+        ),
+
+
+
+        borderSide:
+        BorderSide.none,
+
+
+
+      ),
+
+
+
+
+
+      enabledBorder:
+      OutlineInputBorder(
+
+
+
+        borderRadius:
+        BorderRadius.circular(
+          16,
+        ),
+
+
+
+        borderSide:
+        BorderSide.none,
+
+
+
+      ),
+
+
+
+
+
+
+      focusedBorder:
+      OutlineInputBorder(
+
+
+
+        borderRadius:
+        BorderRadius.circular(
+          16,
+        ),
+
+
+
+        borderSide:
+        BorderSide(
+
+
+
+          color:
+          seedColor,
+
+
+
+          width:
+          2,
+
+
+
+        ),
+
+
+
+      ),
+
+
+
+
+    ),
+
+
+
+
+
+
+    filledButtonTheme:
+    FilledButtonThemeData(
+
+
+
+      style:
+      FilledButton.styleFrom(
+
+
+
+        minimumSize:
+        const Size(
+          double.infinity,
+          55,
+        ),
+
+
+
+
+
+        shape:
+        RoundedRectangleBorder(
+
+
+
+          borderRadius:
+          BorderRadius.circular(
+            16,
+          ),
+
+
+
+        ),
+
+
+
+      ),
+
+
+
+    ),
+
+
+
+  );
 
 
 }

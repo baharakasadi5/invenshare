@@ -1,0 +1,70 @@
+{
+  "appTitle": "اینوِن‌شیر",
+
+  "home": "خانه",
+  "myInventions": "اختراعات من",
+  "addInvention": "ثبت اختراع",
+  "favorites": "علاقه‌مندی‌ها",
+  "details": "جزئیات اختراع",
+
+  "edit": "ویرایش",
+  "delete": "حذف",
+  "cancel": "انصراف",
+  "save": "ذخیره",
+
+  "description": "توضیحات",
+  "category": "دسته‌بندی",
+  "inventorName": "نام مخترع",
+  "status": "وضعیت",
+  "aiAnalysis": "تحلیل هوش مصنوعی",
+
+  "settings": "تنظیمات",
+  "language": "زبان",
+  "about": "درباره برنامه",
+
+  "searchInventions": "جستجوی اختراع...",
+  "all": "همه",
+  "noInventionFound": "اختراعی پیدا نشد",
+
+  "deleteInvention": "حذف اختراع",
+  "deleteConfirm": "آیا مطمئن هستید؟",
+
+  "noFavorites": "هنوز اختراعی به علاقه‌مندی‌ها اضافه نشده است",
+
+  "enterTitle": "لطفاً عنوان اختراع را وارد کنید",
+
+  "other": "سایر",
+  "unknown": "ناشناس",
+  "initialRegistration": "ثبت اولیه",
+
+  "addNewInvention": "ثبت اختراع جدید",
+  "inventionTitle": "عنوان اختراع",
+  "inventionDescription": "توضیحات اختراع",
+  "saveInvention": "ذخیره اختراع",
+
+  "date": "تاریخ ثبت",
+  "images": "تصاویر اختراع",
+  "noImages": "تصویری ثبت نشده است",
+
+  "favorite": "علاقه‌مندی",
+
+  "editInvention": "ویرایش اختراع",
+
+  "saveChanges": "ذخیره تغییرات",
+
+  "editInventionTitle": "عنوان اختراع",
+  "editInventionDescription": "توضیحات اختراع",
+
+  "darkMode": "حالت تاریک",
+  "enabled": "فعال",
+  "disabled": "غیرفعال",
+
+
+  "appDescription": "پلتفرم ثبت، مدیریت و توسعه ایده‌ها و اختراعات",
+
+  "version": "نسخه",
+
+  "technology": "فناوری",
+
+  "developer": "توسعه‌دهنده"
+}

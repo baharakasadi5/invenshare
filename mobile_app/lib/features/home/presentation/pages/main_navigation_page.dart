@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../l10n/app_localizations.dart';
 
 import '../../../inventions/presentation/pages/inventions_page.dart';
 import '../../../favorites/presentation/pages/favorites_page.dart';
+import '../../../settings/presentation/pages/settings_page.dart';
 
 
 
-class MainNavigationPage extends StatefulWidget {
+
+
+class MainNavigationPage extends ConsumerStatefulWidget {
 
 
   const MainNavigationPage({
@@ -15,7 +21,7 @@ class MainNavigationPage extends StatefulWidget {
 
 
   @override
-  State<MainNavigationPage> createState() =>
+  ConsumerState<MainNavigationPage> createState() =>
       _MainNavigationPageState();
 
 
@@ -25,12 +31,15 @@ class MainNavigationPage extends StatefulWidget {
 
 
 
+
 class _MainNavigationPageState
-    extends State<MainNavigationPage> {
+    extends ConsumerState<MainNavigationPage> {
 
 
 
   int currentIndex = 0;
+
+
 
 
 
@@ -44,7 +53,13 @@ class _MainNavigationPageState
     FavoritesPage(),
 
 
+    SettingsPage(),
+
+
   ];
+
+
+
 
 
 
@@ -55,12 +70,22 @@ class _MainNavigationPageState
 
 
 
+    final l10n =
+        AppLocalizations.of(context)!;
+
+
+
+
+
     return Scaffold(
 
 
 
       body:
+
       pages[currentIndex],
+
+
 
 
 
@@ -68,16 +93,21 @@ class _MainNavigationPageState
       bottomNavigationBar:
 
 
+
       NavigationBar(
 
 
 
         selectedIndex:
+
         currentIndex,
 
 
 
+
+
         onDestinationSelected:
+
             (index){
 
 
@@ -95,31 +125,45 @@ class _MainNavigationPageState
 
 
 
-        destinations: const [
+
+
+        destinations: [
+
+
 
 
 
           NavigationDestination(
 
+
+
             icon:
 
-            Icon(
+            const Icon(
 
               Icons.lightbulb_outline,
 
             ),
 
+
+
+
             selectedIcon:
 
-            Icon(
+            const Icon(
 
               Icons.lightbulb,
 
             ),
 
+
+
+
             label:
 
-            'اختراعات',
+            l10n.myInventions,
+
+
 
           ),
 
@@ -128,19 +172,26 @@ class _MainNavigationPageState
 
 
 
+
+
           NavigationDestination(
+
+
 
             icon:
 
-            Icon(
+            const Icon(
 
               Icons.favorite_border,
 
             ),
 
+
+
+
             selectedIcon:
 
-            Icon(
+            const Icon(
 
               Icons.favorite,
 
@@ -148,11 +199,58 @@ class _MainNavigationPageState
 
             ),
 
+
+
+
             label:
 
-            'علاقه‌مندی',
+            l10n.favorites,
+
+
 
           ),
+
+
+
+
+
+
+
+          NavigationDestination(
+
+
+
+            icon:
+
+            const Icon(
+
+              Icons.settings_outlined,
+
+            ),
+
+
+
+
+            selectedIcon:
+
+            const Icon(
+
+              Icons.settings,
+
+            ),
+
+
+
+
+            label:
+
+            l10n.settings,
+
+
+
+          ),
+
+
 
 
 
@@ -160,7 +258,9 @@ class _MainNavigationPageState
 
 
 
+
       ),
+
 
 
 
@@ -169,6 +269,7 @@ class _MainNavigationPageState
 
 
   }
+
 
 
 

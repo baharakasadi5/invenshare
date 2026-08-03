@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 import '../../domain/entities/invention.dart';
 import '../providers/invention_provider.dart';
 
@@ -21,6 +23,7 @@ class AddInventionPage extends ConsumerStatefulWidget {
 
 
 
+
 class _AddInventionPageState
     extends ConsumerState<AddInventionPage> {
 
@@ -32,6 +35,8 @@ class _AddInventionPageState
   final categoryController = TextEditingController();
 
   final inventorController = TextEditingController();
+
+
 
 
 
@@ -52,65 +57,141 @@ class _AddInventionPageState
 
 
 
+
+
+
   Future<void> saveInvention() async {
+
+
+    final l10n =
+    AppLocalizations.of(context)!;
+
+
 
 
     if(titleController.text.trim().isEmpty){
 
+
       ScaffoldMessenger.of(context)
           .showSnackBar(
-        const SnackBar(
-          content: Text(
-            'لطفاً عنوان اختراع را وارد کنید',
+
+        SnackBar(
+
+          content:
+
+          Text(
+
+            l10n.enterTitle,
+
           ),
+
         ),
+
       );
 
+
       return;
+
     }
+
+
+
+
 
 
 
     final invention = Invention(
 
-      id: const Uuid().v4(),
 
-      title: titleController.text.trim(),
+      id:
+
+      const Uuid().v4(),
+
+
+
+      title:
+
+      titleController.text.trim(),
+
+
+
 
       description:
+
       descriptionController.text.trim(),
 
 
+
+
       category:
+
       categoryController.text.trim().isEmpty
-          ? 'سایر'
+
+          ? l10n.other
+
           : categoryController.text.trim(),
 
 
+
+
       inventorName:
+
       inventorController.text.trim().isEmpty
-          ? 'ناشناس'
+
+          ? l10n.unknown
+
           : inventorController.text.trim(),
 
 
-      createdAt: DateTime.now(),
 
 
-      aiAnalysis: '',
+      createdAt:
+
+      DateTime.now(),
 
 
-      status: 'ثبت اولیه',
 
 
-      images: [],
+      aiAnalysis:
+
+      '',
+
+
+
+
+      status:
+
+      l10n.initialRegistration,
+
+
+
+
+      images:
+
+      [],
+
 
     );
 
 
 
+
+
+
+
     await ref
-        .read(inventionStateProvider.notifier)
+
+        .read(
+
+      inventionStateProvider.notifier,
+
+    )
+
         .addInvention(invention);
+
+
+
+
 
 
 
@@ -120,46 +201,81 @@ class _AddInventionPageState
 
     }
 
+
   }
+
+
+
+
 
 
 
 
 
   Widget buildField({
+
     required TextEditingController controller,
+
     required String label,
+
     required IconData icon,
+
     int maxLines = 1,
+
   }){
+
 
     return TextField(
 
+
       controller: controller,
+
 
       maxLines: maxLines,
 
 
+
       decoration: InputDecoration(
 
-        labelText: label,
 
 
-        prefixIcon: Icon(icon),
+        labelText:
+
+        label,
 
 
-        border: OutlineInputBorder(
+
+        prefixIcon:
+
+        Icon(icon),
+
+
+
+
+        border:
+
+        OutlineInputBorder(
+
 
           borderRadius:
+
           BorderRadius.circular(16),
+
 
         ),
 
+
+
       ),
+
 
     );
 
   }
+
+
+
+
 
 
 
@@ -169,38 +285,77 @@ class _AddInventionPageState
   Widget build(BuildContext context) {
 
 
+    final l10n =
+    AppLocalizations.of(context)!;
+
+
+
+
     return Scaffold(
+
+
 
       appBar: AppBar(
 
-        title: const Text(
-          'ثبت اختراع جدید',
+
+        title:
+
+        Text(
+
+          l10n.addNewInvention,
+
         ),
+
+
 
       ),
 
 
 
-      body: SingleChildScrollView(
+
+
+
+      body:
+
+      SingleChildScrollView(
+
+
 
         padding:
+
         const EdgeInsets.all(20),
 
 
-        child: Column(
+
+        child:
+
+        Column(
+
+
 
           children: [
 
 
+
+
             buildField(
 
-              controller:titleController,
+              controller:
 
-              label:'عنوان اختراع',
+              titleController,
 
-              icon:Icons.lightbulb_outline,
+              label:
+
+              l10n.inventionTitle,
+
+              icon:
+
+              Icons.lightbulb_outline,
 
             ),
+
+
+
 
 
 
@@ -208,15 +363,26 @@ class _AddInventionPageState
 
 
 
+
+
             buildField(
 
-              controller:categoryController,
+              controller:
 
-              label:'دسته‌بندی',
+              categoryController,
 
-              icon:Icons.category_outlined,
+              label:
+
+              l10n.category,
+
+              icon:
+
+              Icons.category_outlined,
 
             ),
+
+
+
 
 
 
@@ -224,15 +390,27 @@ class _AddInventionPageState
 
 
 
+
+
+
             buildField(
 
-              controller:inventorController,
+              controller:
 
-              label:'نام مخترع',
+              inventorController,
 
-              icon:Icons.person_outline,
+              label:
+
+              l10n.inventorName,
+
+              icon:
+
+              Icons.person_outline,
 
             ),
+
+
+
 
 
 
@@ -240,17 +418,31 @@ class _AddInventionPageState
 
 
 
+
+
+
             buildField(
 
-              controller:descriptionController,
+              controller:
 
-              label:'توضیحات اختراع',
+              descriptionController,
 
-              icon:Icons.description_outlined,
+              label:
 
-              maxLines:5,
+              l10n.inventionDescription,
+
+              icon:
+
+              Icons.description_outlined,
+
+              maxLines:
+
+              5,
 
             ),
+
+
+
 
 
 
@@ -258,42 +450,79 @@ class _AddInventionPageState
 
 
 
+
+
+
             SizedBox(
 
-              width:double.infinity,
 
-              height:55,
+              width:
+
+              double.infinity,
 
 
-              child: FilledButton.icon(
+              height:
+
+              55,
+
+
+
+
+              child:
+
+              FilledButton.icon(
+
+
 
                 icon:
-                const Icon(Icons.save),
 
+                const Icon(
 
-                label:
-                const Text(
-                  'ذخیره اختراع',
+                  Icons.save,
+
                 ),
 
 
+
+
+                label:
+
+                Text(
+
+                  l10n.saveInvention,
+
+                ),
+
+
+
+
                 onPressed:
+
                 saveInvention,
+
 
 
               ),
 
+
             ),
+
 
 
           ],
 
+
         ),
+
 
       ),
 
+
+
     );
 
+
   }
+
 
 }

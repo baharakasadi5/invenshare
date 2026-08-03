@@ -2,10 +2,11 @@ import 'package:hive/hive.dart';
 
 part 'invention.g.dart';
 
+
 @HiveType(typeId: 0)
 class Invention {
 
-  // قبلی
+
   @HiveField(0)
   final String id;
 
@@ -18,12 +19,10 @@ class Invention {
   final String description;
 
 
-  // قبلی HiveField 3 بود
   @HiveField(3)
   final DateTime createdAt;
 
 
-  // فیلدهای جدید
   @HiveField(4)
   final String category;
 
@@ -69,6 +68,8 @@ class Invention {
 
 
 
+
+
   Invention copyWith({
 
     String? title,
@@ -92,28 +93,201 @@ class Invention {
 
       id: id,
 
-      title: title ?? this.title,
+      title:
+      title ?? this.title,
 
-      description: description ?? this.description,
 
-      createdAt: createdAt,
+      description:
+      description ?? this.description,
 
-      category: category ?? this.category,
+
+      createdAt:
+      createdAt,
+
+
+      category:
+      category ?? this.category,
+
 
       inventorName:
-          inventorName ?? this.inventorName,
+      inventorName ?? this.inventorName,
+
 
       aiAnalysis:
-          aiAnalysis ?? this.aiAnalysis,
+      aiAnalysis ?? this.aiAnalysis,
+
 
       status:
-          status ?? this.status,
+      status ?? this.status,
+
 
       images:
-          images ?? this.images,
+      images ?? this.images,
+
 
     );
 
+
   }
+
+
+
+
+
+
+
+  // ==========================
+  // Backup JSON
+  // ==========================
+
+
+  Map<String, dynamic> toJson() {
+
+
+    return {
+
+
+      "id": id,
+
+      "title": title,
+
+      "description": description,
+
+      "createdAt":
+      createdAt.toIso8601String(),
+
+      "category": category,
+
+      "inventorName": inventorName,
+
+      "aiAnalysis": aiAnalysis,
+
+      "status": status,
+
+      "images": images,
+
+
+    };
+
+
+  }
+
+
+
+
+
+
+
+
+  // ==========================
+  // Restore JSON
+  // ==========================
+
+
+  factory Invention.fromJson(
+      Map<String, dynamic> json,
+      ) {
+
+
+    return Invention(
+
+
+      id:
+      json["id"]?.toString() ?? "",
+
+
+
+      title:
+      json["title"]?.toString() ?? "",
+
+
+
+      description:
+      json["description"]?.toString() ?? "",
+
+
+
+      createdAt:
+
+      json["createdAt"] != null
+
+          ? DateTime.tryParse(
+        json["createdAt"].toString(),
+      ) ?? DateTime.now()
+
+          : DateTime.now(),
+
+
+
+
+
+      category:
+
+      json["category"]?.toString()
+          ?? "عمومی",
+
+
+
+
+
+      inventorName:
+
+      json["inventorName"]?.toString()
+          ?? "نامشخص",
+
+
+
+
+
+      aiAnalysis:
+
+      json["aiAnalysis"]?.toString()
+          ?? "",
+
+
+
+
+
+      status:
+
+      json["status"]?.toString()
+          ?? "draft",
+
+
+
+
+
+      images:
+
+      json["images"] is List
+
+          ? List<String>.from(
+        json["images"],
+      )
+
+          : [],
+
+
+
+    );
+
+
+  }
+
+
+
+
+
+
+
+  @override
+  String toString() {
+
+
+    return "Invention(title: $title, status: $status)";
+
+
+  }
+
 
 }

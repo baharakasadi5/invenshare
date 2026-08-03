@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 import 'add_invention_page.dart';
 import 'invention_details_page.dart';
 
@@ -15,7 +17,6 @@ class InventionsPage extends ConsumerWidget {
   });
 
 
-
   @override
   Widget build(
       BuildContext context,
@@ -23,9 +24,11 @@ class InventionsPage extends ConsumerWidget {
       ) {
 
 
+    final l10n = AppLocalizations.of(context)!;
+
+
     final inventions =
         ref.watch(filteredInventionsProvider);
-
 
 
     final allInventions =
@@ -33,15 +36,16 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-    final categories = {
+    final categories = <String>[
 
-      'همه',
+      l10n.all,
 
       ...allInventions
           .map((e) => e.category)
-          .where((e) => e.isNotEmpty),
+          .where((e) => e.isNotEmpty)
+          .toSet(),
 
-    }.toList();
+    ];
 
 
 
@@ -50,16 +54,25 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+    final safeSelectedCategory =
+    categories.contains(selectedCategory)
+        ? selectedCategory
+        : l10n.all;
+
+
+
+
     return Scaffold(
 
 
       appBar: AppBar(
 
-        title: const Text(
 
-          'InvenShare',
+        title: Text(
 
-          style: TextStyle(
+          l10n.appTitle,
+
+          style: const TextStyle(
 
             fontWeight: FontWeight.bold,
 
@@ -68,6 +81,7 @@ class InventionsPage extends ConsumerWidget {
         ),
 
       ),
+
 
 
 
@@ -101,18 +115,14 @@ class InventionsPage extends ConsumerWidget {
 
                     hintText:
 
-                    'جستجوی اختراع...',
-
+                    l10n.searchInventions,
 
 
                     prefixIcon:
 
                     const Icon(
-
                       Icons.search,
-
                     ),
-
 
 
 
@@ -126,8 +136,8 @@ class InventionsPage extends ConsumerWidget {
 
                     ),
 
-
                   ),
+
 
 
 
@@ -137,11 +147,7 @@ class InventionsPage extends ConsumerWidget {
                     ref
 
                         .read(
-
-                      inventionSearchProvider
-
-                          .notifier,
-
+                      inventionSearchProvider.notifier,
                     )
 
                         .state = value;
@@ -160,10 +166,15 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+
+
                 DropdownButtonFormField<String>(
 
 
-                  value: selectedCategory,
+                  value:
+
+                  safeSelectedCategory,
+
 
 
                   decoration:
@@ -173,8 +184,7 @@ class InventionsPage extends ConsumerWidget {
 
                     labelText:
 
-                    'دسته‌بندی',
-
+                    l10n.category,
 
 
                     border:
@@ -187,16 +197,14 @@ class InventionsPage extends ConsumerWidget {
 
                     ),
 
-
                   ),
+
 
 
 
                   items:
 
-                  categories
-
-                      .map(
+                  categories.map(
 
                           (category) =>
 
@@ -226,11 +234,7 @@ class InventionsPage extends ConsumerWidget {
                       ref
 
                           .read(
-
-                        inventionCategoryProvider
-
-                            .notifier,
-
+                        inventionCategoryProvider.notifier,
                       )
 
                           .state = value;
@@ -256,20 +260,28 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+
           Expanded(
 
 
+            child:
 
-            child: inventions.isEmpty
-
-
-
-                ? const _EmptyInventionsView()
+            inventions.isEmpty
 
 
+                ?
+
+            _EmptyInventionsView(
+
+              text: l10n.noInventionFound,
+
+            )
 
 
-                : ListView.separated(
+
+                :
+
+            ListView.separated(
 
 
 
@@ -302,10 +314,8 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-
               itemBuilder:
-
-                  (context,index){
+    (context,index){
 
 
 
@@ -320,15 +330,18 @@ class InventionsPage extends ConsumerWidget {
                 return Card(
 
 
-
                   elevation:1,
-
 
 
                   clipBehavior:
 
                   Clip.antiAlias,
-                  child: InkWell(
+
+
+
+                  child:
+
+                  InkWell(
 
 
 
@@ -359,7 +372,9 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-                    child: ListTile(
+                    child:
+
+                    ListTile(
 
 
 
@@ -372,20 +387,18 @@ class InventionsPage extends ConsumerWidget {
 
                       leading:
 
-                      CircleAvatar(
+                      const CircleAvatar(
 
 
                         child:
 
-                        const Icon(
+                        Icon(
 
                           Icons.lightbulb_outline,
 
                         ),
 
-
                       ),
-
 
 
 
@@ -411,7 +424,6 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-
                       subtitle:
 
                       Text(
@@ -432,7 +444,6 @@ class InventionsPage extends ConsumerWidget {
                       trailing:
 
                       IconButton(
-
 
 
                         icon:
@@ -478,12 +489,10 @@ class InventionsPage extends ConsumerWidget {
                 );
 
 
-
               },
 
 
             ),
-
 
 
           ),
@@ -535,9 +544,9 @@ class InventionsPage extends ConsumerWidget {
 
         label:
 
-        const Text(
+        Text(
 
-          'ثبت اختراع',
+          l10n.addInvention,
 
         ),
 
@@ -546,10 +555,12 @@ class InventionsPage extends ConsumerWidget {
       ),
 
 
+
     );
 
 
   }
+
 
 
 
@@ -568,6 +579,11 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+    final l10n =
+    AppLocalizations.of(context)!;
+
+
+
     showDialog(
 
 
@@ -580,9 +596,9 @@ class InventionsPage extends ConsumerWidget {
 
         title:
 
-        const Text(
+        Text(
 
-          'حذف اختراع',
+          l10n.deleteInvention,
 
         ),
 
@@ -591,9 +607,9 @@ class InventionsPage extends ConsumerWidget {
 
         content:
 
-        const Text(
+        Text(
 
-          'آیا مطمئن هستید؟',
+          l10n.deleteConfirm,
 
         ),
 
@@ -614,13 +630,14 @@ class InventionsPage extends ConsumerWidget {
 
             child:
 
-            const Text(
+            Text(
 
-              'انصراف',
+              l10n.cancel,
 
             ),
 
           ),
+
 
 
 
@@ -635,11 +652,7 @@ class InventionsPage extends ConsumerWidget {
               await ref
 
                   .read(
-
-                inventionStateProvider
-
-                    .notifier,
-
+                inventionStateProvider.notifier,
               )
 
                   .deleteInvention(id);
@@ -654,15 +667,14 @@ class InventionsPage extends ConsumerWidget {
               }
 
 
-
             },
 
 
             child:
 
-            const Text(
+            Text(
 
-              'حذف',
+              l10n.delete,
 
             ),
 
@@ -693,12 +705,18 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+
 class _EmptyInventionsView extends StatelessWidget {
 
 
-  const _EmptyInventionsView();
+  final String text;
 
 
+  const _EmptyInventionsView({
+
+    required this.text,
+
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -711,7 +729,8 @@ class _EmptyInventionsView extends StatelessWidget {
 
       Text(
 
-        'اختراعی پیدا نشد',
+        text,
+
 
         style:
 

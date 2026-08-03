@@ -3,8 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 import '../../domain/entities/invention.dart';
 import '../providers/invention_provider.dart';
+
 
 
 class EditInventionPage extends ConsumerStatefulWidget {
@@ -27,6 +30,8 @@ class EditInventionPage extends ConsumerStatefulWidget {
 
 
 
+
+
 class _EditInventionPageState
     extends ConsumerState<EditInventionPage> {
 
@@ -45,6 +50,8 @@ class _EditInventionPageState
 
 
 
+
+
   @override
   void initState() {
 
@@ -55,29 +62,43 @@ class _EditInventionPageState
 
 
     titleController =
-        TextEditingController(text: invention.title);
+        TextEditingController(
+          text: invention.title,
+        );
 
 
     descriptionController =
-        TextEditingController(text: invention.description);
+        TextEditingController(
+          text: invention.description,
+        );
 
 
     categoryController =
-        TextEditingController(text: invention.category);
+        TextEditingController(
+          text: invention.category,
+        );
 
 
     inventorController =
-        TextEditingController(text: invention.inventorName);
+        TextEditingController(
+          text: invention.inventorName,
+        );
 
 
     statusController =
-        TextEditingController(text: invention.status);
+        TextEditingController(
+          text: invention.status,
+        );
 
 
     aiController =
-        TextEditingController(text: invention.aiAnalysis);
+        TextEditingController(
+          text: invention.aiAnalysis,
+        );
 
   }
+
+
 
 
 
@@ -105,6 +126,9 @@ class _EditInventionPageState
 
 
 
+
+
+
   Future<void> saveChanges() async {
 
 
@@ -112,7 +136,8 @@ class _EditInventionPageState
         widget.invention.copyWith(
 
 
-          title: titleController.text.trim(),
+          title:
+          titleController.text.trim(),
 
 
           description:
@@ -140,10 +165,12 @@ class _EditInventionPageState
 
 
     await ref
-        .read(inventionStateProvider.notifier)
+        .read(
+      inventionStateProvider.notifier,
+    )
         .updateInvention(
-          updatedInvention,
-        );
+      updatedInvention,
+    );
 
 
 
@@ -160,8 +187,17 @@ class _EditInventionPageState
 
 
 
+
+
+
+
   @override
   Widget build(BuildContext context) {
+
+
+    final l10n =
+    AppLocalizations.of(context)!;
+
 
 
     return Scaffold(
@@ -169,24 +205,36 @@ class _EditInventionPageState
 
       appBar: AppBar(
 
-        title: const Text(
-          'ویرایش اختراع',
+
+        title:
+
+        Text(
+
+          l10n.editInvention,
+
         ),
+
 
       ),
 
 
 
 
-      body: SingleChildScrollView(
+
+      body:
+
+      SingleChildScrollView(
 
 
         padding:
+
         const EdgeInsets.all(20),
 
 
 
-        child: Column(
+        child:
+
+        Column(
 
 
           children: [
@@ -194,57 +242,94 @@ class _EditInventionPageState
 
 
             _field(
+
               controller: titleController,
-              label: 'عنوان اختراع',
+
+              label: l10n.inventionTitle,
+
               icon: Icons.lightbulb_outline,
+
             ),
 
 
 
+
             _field(
+
               controller: descriptionController,
-              label: 'توضیحات',
+
+              label: l10n.description,
+
               icon: Icons.description_outlined,
+
               maxLines: 5,
+
             ),
 
 
 
+
+
             _field(
+
               controller: categoryController,
-              label: 'دسته‌بندی',
+
+              label: l10n.category,
+
               icon: Icons.category_outlined,
+
             ),
 
 
 
+
+
             _field(
+
               controller: inventorController,
-              label: 'نام مخترع',
+
+              label: l10n.inventorName,
+
               icon: Icons.person_outline,
+
             ),
 
 
 
+
+
             _field(
+
               controller: statusController,
-              label: 'وضعیت',
+
+              label: l10n.status,
+
               icon: Icons.info_outline,
+
             ),
+
+
 
 
 
             _field(
+
               controller: aiController,
-              label: 'تحلیل هوش مصنوعی',
+
+              label: l10n.aiAnalysis,
+
               icon: Icons.auto_awesome,
+
               maxLines: 4,
+
             ),
+
 
 
 
 
             const SizedBox(height:25),
+
 
 
 
@@ -256,23 +341,45 @@ class _EditInventionPageState
               height:55,
 
 
-              child: FilledButton.icon(
+
+              child:
+
+              FilledButton.icon(
 
 
-                icon: const Icon(
+
+                icon:
+
+                const Icon(
+
                   Icons.save,
+
                 ),
-                 label: const Text(
-                  'ذخیره تغییرات',
+
+
+
+
+
+                label:
+
+                Text(
+
+                  l10n.saveChanges,
+
                 ),
+
 
 
 
                 onPressed:
+
                 saveChanges,
 
 
+
               ),
+
+
 
             ),
 
@@ -296,55 +403,103 @@ class _EditInventionPageState
 
 
 
+
+
+
+
   Widget _field({
+
 
     required TextEditingController controller,
 
+
     required String label,
+
 
     required IconData icon,
 
+
     int maxLines = 1,
+
 
   }) {
 
 
     return Padding(
 
+
       padding:
-      const EdgeInsets.only(bottom:15),
+
+      const EdgeInsets.only(
+
+        bottom:15,
+
+      ),
 
 
-      child: TextField(
 
 
-        controller: controller,
+      child:
+
+      TextField(
 
 
-        maxLines: maxLines,
+
+        controller:
+
+        controller,
 
 
-        decoration: InputDecoration(
+
+        maxLines:
+
+        maxLines,
 
 
-          labelText: label,
+
+        decoration:
+
+        InputDecoration(
+
+
+
+          labelText:
+
+          label,
+
+
 
 
           prefixIcon:
+
           Icon(icon),
 
 
+
+
           border:
+
           OutlineInputBorder(
 
+
+
             borderRadius:
+
             BorderRadius.circular(16),
+
+
 
           ),
 
+
+
         ),
 
+
+
       ),
+
+
 
     );
 
