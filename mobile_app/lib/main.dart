@@ -6,7 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'features/inventions/domain/entities/invention.dart';
+import 'features/favorites/data/models/favorite_model.dart';
+
 import 'features/inventions/presentation/pages/inventions_page.dart';
+
 
 
 Future<void> main() async {
@@ -14,12 +17,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
 
+
   // Initialize Hive
   await Hive.initFlutter();
 
 
 
-  // Register Hive Adapter
+
+  // Register Invention Adapter
+
   if (!Hive.isAdapterRegistered(0)) {
 
     Hive.registerAdapter(
@@ -30,11 +36,35 @@ Future<void> main() async {
 
 
 
-  // Open local database
-  // اطلاعات اختراعات بعد از بستن برنامه حفظ می‌شود
+
+  // Register Favorite Adapter
+
+  if (!Hive.isAdapterRegistered(1)) {
+
+    Hive.registerAdapter(
+      FavoriteModelAdapter(),
+    );
+
+  }
+
+
+
+
+
+  // Open Hive Boxes
+
+
   await Hive.openBox<Invention>(
     'inventions',
   );
+
+
+
+  await Hive.openBox<FavoriteModel>(
+    'favorites',
+  );
+
+
 
 
 
@@ -69,10 +99,13 @@ class InvenShareApp extends StatelessWidget {
 
     return MaterialApp(
 
+
       title: 'InvenShare',
 
 
+
       debugShowCheckedModeBanner: false,
+
 
 
 
@@ -88,63 +121,95 @@ class InvenShareApp extends StatelessWidget {
 
 
 
+
       supportedLocales: const [
 
-        Locale('fa', 'IR'),
+        Locale('fa','IR'),
 
-        Locale('en', 'US'),
+        Locale('en','US'),
 
       ],
 
 
 
-      locale: const Locale('fa', 'IR'),
+
+      locale: const Locale(
+        'fa',
+        'IR',
+      ),
+
 
 
 
       theme: ThemeData(
 
+
         useMaterial3: true,
+
 
 
         fontFamily: 'Vazir',
 
 
 
+
         colorScheme: ColorScheme.fromSeed(
 
-          seedColor: Color(0xFF5B38B5),
 
-          brightness: Brightness.light,
+          seedColor:
+          Color(0xFF5B38B5),
+
+
+          brightness:
+          Brightness.light,
+
 
         ),
+
 
 
 
         scaffoldBackgroundColor:
 
-            const Color(0xFFF9F9FC),
+        const Color(0xFFF9F9FC),
 
 
 
-        appBarTheme: const AppBarTheme(
+
+        appBarTheme:
+
+        const AppBarTheme(
+
 
           centerTitle: false,
 
+
           elevation: 0,
 
-          backgroundColor: Colors.transparent,
+
+          backgroundColor:
+          Colors.transparent,
+
 
         ),
+
+
 
       ),
 
 
 
-      home: const InventionsPage(),
+
+      home:
+
+      const InventionsPage(),
+
+
 
     );
 
+
   }
+
 
 }

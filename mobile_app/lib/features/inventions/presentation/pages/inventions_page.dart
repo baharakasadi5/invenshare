@@ -8,7 +8,6 @@ import '../providers/invention_provider.dart';
 import '../providers/invention_filter_provider.dart';
 
 
-
 class InventionsPage extends ConsumerWidget {
 
   const InventionsPage({
@@ -24,18 +23,37 @@ class InventionsPage extends ConsumerWidget {
       ) {
 
 
-
     final inventions =
         ref.watch(filteredInventionsProvider);
+
+
+
+    final allInventions =
+        ref.watch(inventionStateProvider);
+
+
+
+    final categories = {
+
+      'همه',
+
+      ...allInventions
+          .map((e) => e.category)
+          .where((e) => e.isNotEmpty),
+
+    }.toList();
+
+
+
+    final selectedCategory =
+        ref.watch(inventionCategoryProvider);
 
 
 
     return Scaffold(
 
 
-
       appBar: AppBar(
-
 
         title: const Text(
 
@@ -48,7 +66,6 @@ class InventionsPage extends ConsumerWidget {
           ),
 
         ),
-
 
       ),
 
@@ -77,14 +94,19 @@ class InventionsPage extends ConsumerWidget {
                 TextField(
 
 
-                  decoration: InputDecoration(
+                  decoration:
+
+                  InputDecoration(
 
 
                     hintText:
+
                     'جستجوی اختراع...',
 
 
+
                     prefixIcon:
+
                     const Icon(
 
                       Icons.search,
@@ -93,10 +115,13 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+
                     border:
+
                     OutlineInputBorder(
 
                       borderRadius:
+
                       BorderRadius.circular(16),
 
                     ),
@@ -106,7 +131,7 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-                  onChanged: (value) {
+                  onChanged: (value){
 
 
                     ref
@@ -114,6 +139,7 @@ class InventionsPage extends ConsumerWidget {
                         .read(
 
                       inventionSearchProvider
+
                           .notifier,
 
                     )
@@ -137,14 +163,7 @@ class InventionsPage extends ConsumerWidget {
                 DropdownButtonFormField<String>(
 
 
-                  value:
-
-                  ref.watch(
-
-                      inventionCategoryProvider
-
-                  ),
-
+                  value: selectedCategory,
 
 
                   decoration:
@@ -153,17 +172,18 @@ class InventionsPage extends ConsumerWidget {
 
 
                     labelText:
+
                     'دسته‌بندی',
 
 
 
                     border:
+
                     OutlineInputBorder(
 
-
                       borderRadius:
-                      BorderRadius.circular(16),
 
+                      BorderRadius.circular(16),
 
                     ),
 
@@ -172,38 +192,23 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-
                   items:
 
-                  const [
-
-
-                    'همه',
-
-                    'فناوری',
-
-                    'پزشکی',
-
-                    'رباتیک',
-
-                    'هوش مصنوعی',
-
-                    'معماری',
-
-                  ]
+                  categories
 
                       .map(
 
-                        (category) =>
+                          (category) =>
 
-                        DropdownMenuItem(
+                          DropdownMenuItem(
 
-                          value: category,
+                            value: category,
 
-                          child:
-                          Text(category),
+                            child:
 
-                        ),
+                            Text(category),
+
+                          )
 
                   )
 
@@ -212,7 +217,7 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-                  onChanged: (value) {
+                  onChanged: (value){
 
 
                     if(value != null){
@@ -223,6 +228,7 @@ class InventionsPage extends ConsumerWidget {
                           .read(
 
                         inventionCategoryProvider
+
                             .notifier,
 
                       )
@@ -242,9 +248,7 @@ class InventionsPage extends ConsumerWidget {
 
               ],
 
-
             ),
-
 
           ),
 
@@ -270,22 +274,29 @@ class InventionsPage extends ConsumerWidget {
 
 
               padding:
+
               const EdgeInsets.symmetric(
+
                 horizontal:16,
+
               ),
 
 
 
+
               itemCount:
+
               inventions.length,
 
 
 
 
-              separatorBuilder: (_,__) =>
+              separatorBuilder: (_,__)=>
 
               const SizedBox(
+
                 height:12,
+
               ),
 
 
@@ -293,12 +304,16 @@ class InventionsPage extends ConsumerWidget {
 
 
               itemBuilder:
+
                   (context,index){
 
 
 
                 final invention =
+
                 inventions[index];
+
+
 
 
 
@@ -311,36 +326,30 @@ class InventionsPage extends ConsumerWidget {
 
 
                   clipBehavior:
+
                   Clip.antiAlias,
-        child: InkWell(
+                  child: InkWell(
 
 
 
-                    onTap: () {
-
+                    onTap: (){
 
 
                       Navigator.push(
 
-
                         context,
 
-
                         MaterialPageRoute(
-
 
                           builder: (_) =>
 
                               InventionDetailsPage(
 
-                                invention:
-                                invention,
+                                invention: invention,
 
                               ),
 
-
                         ),
-
 
                       );
 
@@ -350,12 +359,12 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-
                     child: ListTile(
 
 
 
                       contentPadding:
+
                       const EdgeInsets.all(16),
 
 
@@ -392,6 +401,7 @@ class InventionsPage extends ConsumerWidget {
                         const TextStyle(
 
                           fontWeight:
+
                           FontWeight.bold,
 
                         ),
@@ -419,7 +429,6 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-
                       trailing:
 
                       IconButton(
@@ -437,7 +446,7 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-                        onPressed: () {
+                        onPressed: (){
 
 
                           _showDeleteDialog(
@@ -454,7 +463,6 @@ class InventionsPage extends ConsumerWidget {
                         },
 
 
-
                       ),
 
 
@@ -462,11 +470,13 @@ class InventionsPage extends ConsumerWidget {
                     ),
 
 
+
                   ),
 
 
 
                 );
+
 
 
               },
@@ -483,9 +493,7 @@ class InventionsPage extends ConsumerWidget {
         ],
 
 
-
       ),
-
 
 
 
@@ -497,7 +505,7 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-        onPressed: () {
+        onPressed: (){
 
 
           Navigator.push(
@@ -525,7 +533,6 @@ class InventionsPage extends ConsumerWidget {
 
 
 
-
         label:
 
         const Text(
@@ -548,6 +555,7 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+
   void _showDeleteDialog(
 
       BuildContext context,
@@ -556,7 +564,7 @@ class InventionsPage extends ConsumerWidget {
 
       String id,
 
-      ) {
+      ){
 
 
 
@@ -598,10 +606,11 @@ class InventionsPage extends ConsumerWidget {
 
           TextButton(
 
-            onPressed: () =>
+            onPressed: (){
 
-                Navigator.pop(context),
+              Navigator.pop(context);
 
+            },
 
             child:
 
@@ -622,11 +631,13 @@ class InventionsPage extends ConsumerWidget {
             onPressed: () async {
 
 
+
               await ref
 
                   .read(
 
                 inventionStateProvider
+
                     .notifier,
 
               )
@@ -635,11 +646,13 @@ class InventionsPage extends ConsumerWidget {
 
 
 
+
               if(context.mounted){
 
                 Navigator.pop(context);
 
               }
+
 
 
             },
@@ -669,7 +682,6 @@ class InventionsPage extends ConsumerWidget {
     );
 
 
-
   }
 
 
@@ -694,6 +706,7 @@ class _EmptyInventionsView extends StatelessWidget {
 
     return Center(
 
+
       child:
 
       Text(
@@ -709,6 +722,7 @@ class _EmptyInventionsView extends StatelessWidget {
             .titleLarge,
 
       ),
+
 
     );
 
