@@ -1,18 +1,27 @@
+// lib/features/favorites/presentation/providers/favorite_provider.dart
+
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../../favorites/data/models/favorite_model.dart';
+import '../../data/models/favorite_model.dart';
+
+
 
 
 
 final favoriteProvider =
-    StateNotifierProvider<FavoriteNotifier, List<String>>(
-  (ref) {
+StateNotifierProvider<FavoriteNotifier, List<String>>(
+      (ref) {
 
     return FavoriteNotifier();
 
   },
+
 );
+
+
+
 
 
 
@@ -21,7 +30,9 @@ final favoriteProvider =
 class FavoriteNotifier extends StateNotifier<List<String>> {
 
 
+
   FavoriteNotifier()
+
       : super([]) {
 
     loadFavorites();
@@ -30,14 +41,25 @@ class FavoriteNotifier extends StateNotifier<List<String>> {
 
 
 
+
+
+
   final Box<FavoriteModel> box =
-      Hive.box<FavoriteModel>('favorites');
+
+      Hive.box<FavoriteModel>(
+        'favorites',
+      );
+
+
+
+
 
 
 
 
 
   void loadFavorites() {
+
 
 
     state = box.values
@@ -48,9 +70,10 @@ class FavoriteNotifier extends StateNotifier<List<String>> {
 
               favorite.inventionId,
 
-        )
+    )
 
         .toList();
+
 
 
   }
@@ -60,7 +83,13 @@ class FavoriteNotifier extends StateNotifier<List<String>> {
 
 
 
-  bool isFavorite(String inventionId) {
+
+
+
+  bool isFavorite(
+      String inventionId,
+      ) {
+
 
 
     return state.contains(
@@ -68,7 +97,10 @@ class FavoriteNotifier extends StateNotifier<List<String>> {
     );
 
 
+
   }
+
+
 
 
 
@@ -77,7 +109,9 @@ class FavoriteNotifier extends StateNotifier<List<String>> {
 
 
   Future<void> toggleFavorite(
+
       String inventionId,
+
       ) async {
 
 
@@ -85,15 +119,18 @@ class FavoriteNotifier extends StateNotifier<List<String>> {
     if (isFavorite(inventionId)) {
 
 
+
       final favorite =
 
-          box.values.firstWhere(
+      box.values.firstWhere(
 
-                (item) =>
+            (item) =>
 
-            item.inventionId == inventionId,
+        item.inventionId == inventionId,
 
-          );
+      );
+
+
 
 
 
@@ -101,11 +138,17 @@ class FavoriteNotifier extends StateNotifier<List<String>> {
 
 
 
+
+
       state = [
 
         ...state,
 
-      ]..remove(inventionId);
+      ]
+
+        ..remove(inventionId);
+
+
 
 
 
@@ -113,7 +156,10 @@ class FavoriteNotifier extends StateNotifier<List<String>> {
 
 
 
+
+
       await box.add(
+
 
         FavoriteModel(
 
@@ -121,7 +167,10 @@ class FavoriteNotifier extends StateNotifier<List<String>> {
 
         ),
 
+
       );
+
+
 
 
 
@@ -134,10 +183,16 @@ class FavoriteNotifier extends StateNotifier<List<String>> {
       ];
 
 
+
     }
 
 
+
   }
+
+
+
+
 
 
 }

@@ -1,49 +1,91 @@
+// lib/features/favorites/presentation/pages/favorites_page.dart
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
+import '../providers/favorite_provider.dart';
+
+
 import '../../../inventions/presentation/providers/invention_provider.dart';
-import '../../../inventions/presentation/providers/favorite_provider.dart';
+
 import '../../../inventions/presentation/pages/invention_details_page.dart';
+
+
+
+
 
 
 class FavoritesPage extends ConsumerWidget {
 
 
   const FavoritesPage({
+
     super.key,
+
   });
+
+
 
 
 
 
   @override
   Widget build(
+
       BuildContext context,
+
       WidgetRef ref,
+
       ) {
 
 
 
     final favoriteIds =
-        ref.watch(favoriteProvider);
+
+        ref.watch(
+
+          favoriteProvider,
+
+        );
+
+
 
 
 
     final inventions =
-        ref.watch(inventionStateProvider);
+
+        ref.watch(
+
+          inventionStateProvider,
+
+        );
+
+
 
 
 
 
     final favoriteInventions =
-        inventions
-            .where(
-              (item) =>
-              favoriteIds.contains(
-                item.id,
-              ),
-        )
-            .toList();
+
+    inventions
+
+        .where(
+
+          (item) =>
+
+          favoriteIds.contains(
+
+            item.id,
+
+          ),
+
+    )
+
+        .toList();
+
+
 
 
 
@@ -54,12 +96,20 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+
       appBar: AppBar(
 
+
+
         title:
+
         const Text(
+
           'علاقه‌مندی‌ها',
+
         ),
+
+
 
       ),
 
@@ -68,8 +118,9 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
-      body:
 
+
+      body:
 
       favoriteInventions.isEmpty
 
@@ -77,11 +128,17 @@ class FavoritesPage extends ConsumerWidget {
 
           ? const Center(
 
+
+
         child:
 
         Text(
+
           'هنوز اختراعی به علاقه‌مندی‌ها اضافه نشده است',
+
         ),
+
+
 
       )
 
@@ -91,9 +148,12 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+
+
         padding:
 
         const EdgeInsets.all(16),
+
 
 
 
@@ -103,13 +163,19 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+
+
+
         separatorBuilder:
 
-            (_,__) =>
+            (_, __) =>
 
         const SizedBox(
+
           height:12,
+
         ),
+
 
 
 
@@ -122,7 +188,9 @@ class FavoritesPage extends ConsumerWidget {
 
 
           final invention =
+
           favoriteInventions[index];
+
 
 
 
@@ -139,9 +207,12 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+
               leading:
 
               const CircleAvatar(
+
+
 
                 child:
 
@@ -153,7 +224,10 @@ class FavoritesPage extends ConsumerWidget {
 
                 ),
 
+
+
               ),
+
 
 
 
@@ -163,19 +237,30 @@ class FavoritesPage extends ConsumerWidget {
 
               Text(
 
+
+
                 invention.title,
+
+
 
                 style:
 
                 const TextStyle(
 
+
+
                   fontWeight:
 
                   FontWeight.bold,
 
+
+
                 ),
 
+
+
               ),
+
 
 
 
@@ -186,15 +271,25 @@ class FavoritesPage extends ConsumerWidget {
 
               Text(
 
+
+
                 invention.description,
 
+
+
                 maxLines:2,
+
+
 
                 overflow:
 
                 TextOverflow.ellipsis,
 
+
+
               ),
+
+
 
 
 
@@ -207,20 +302,29 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+
                 icon:
 
                 const Icon(
 
+
+
                   Icons.favorite,
 
                   color: Colors.red,
+
+
 
                 ),
 
 
 
 
+
+
                 onPressed: () async {
+
+
 
 
 
@@ -236,13 +340,21 @@ class FavoritesPage extends ConsumerWidget {
 
                       .toggleFavorite(
 
+
+
                     invention.id,
+
+
 
                   );
 
 
 
+
+
                 },
+
+
 
 
 
@@ -253,32 +365,56 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+
               onTap: () {
+
+
 
 
 
                 Navigator.push(
 
+
+
                   context,
+
+
 
                   MaterialPageRoute(
 
+
+
                     builder: (_) =>
 
+
+
                         InventionDetailsPage(
+
+
 
                           invention:
 
                           invention,
 
+
+
                         ),
 
+
+
                   ),
+
+
 
                 );
 
 
+
+
+
               },
+
+
 
 
 
@@ -286,11 +422,15 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+
           );
 
 
 
+
         },
+
+
 
 
 
@@ -303,7 +443,10 @@ class FavoritesPage extends ConsumerWidget {
 
 
 
+
   }
+
+
 
 
 
