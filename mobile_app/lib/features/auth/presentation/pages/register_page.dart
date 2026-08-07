@@ -8,487 +8,306 @@ import '../providers/auth_provider.dart';
 
 import 'login_page.dart';
 
-
 class RegisterPage extends ConsumerStatefulWidget {
-
-  const RegisterPage({
-    super.key,
-  });
-
+  const RegisterPage({super.key});
 
   @override
   ConsumerState<RegisterPage> createState() =>
       _RegisterPageState();
-
 }
-
-
 
 class _RegisterPageState
     extends ConsumerState<RegisterPage> {
+  final TextEditingController nameController =
+      TextEditingController();
 
+  final TextEditingController usernameController =
+      TextEditingController();
 
-  final nameController = TextEditingController();
+  final TextEditingController emailController =
+      TextEditingController();
 
-  final usernameController = TextEditingController();
+  final TextEditingController specialtyController =
+      TextEditingController();
 
-  final emailController = TextEditingController();
+  final TextEditingController bioController =
+      TextEditingController();
 
-  final specialtyController = TextEditingController();
+  final TextEditingController passwordController =
+      TextEditingController();
 
-  final bioController = TextEditingController();
-
-  final passwordController = TextEditingController();
-
-  final confirmPasswordController = TextEditingController();
-
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   bool loading = false;
 
-
-
   Future<void> register() async {
+    final l10n = AppLocalizations.of(context)!;
 
-
-    final l10n =
-    AppLocalizations.of(context)!;
-
-
-
-    final password =
-    passwordController.text.trim();
-
-
-
+    final name = nameController.text.trim();
+    final username = usernameController.text.trim();
+    final email = emailController.text.trim();
+    final specialty = specialtyController.text.trim();
+    final bio = bioController.text.trim();
+    final password = passwordController.text.trim();
     final confirmPassword =
-    confirmPasswordController.text.trim();
+        confirmPasswordController.text.trim();
 
+    if (username.isEmpty) {
+      showMessage(l10n.usernameRequired);
+      return;
+    }
 
+    if (password.isEmpty) {
+      showMessage(l10n.passwordRequired);
+      return;
+    }
 
-    if(password != confirmPassword){
+    if (password.length < 6) {
+      showMessage(
+        l10n.passwordTooShort,
+      );
+      return;
+    }
 
+    if (password != confirmPassword) {
       showMessage(
         l10n.passwordMismatch,
       );
-
       return;
-
     }
 
-
+    if (loading) {
+      return;
+    }
 
     setState(() {
-
       loading = true;
-
     });
-
-
-
-
 
     final user = UserModel(
-
-      username:
-      usernameController.text.trim(),
-
-      password:
-      password,
-
-      name:
-      nameController.text.trim(),
-
-      email:
-      emailController.text.trim(),
-
-      specialty:
-      specialtyController.text.trim(),
-
-      bio:
-      bioController.text.trim(),
-
+      username: username,
+      password: password,
+      name: name,
+      email: email,
+      specialty: specialty,
+      bio: bio,
     );
 
+    try {
+      final error = await ref
+          .read(authProvider.notifier)
+          .register(user);
 
+      if (!mounted) {
+        return;
+      }
 
+      setState(() {
+        loading = false;
+      });
 
+      if (error != null) {
+        showMessage(error);
+        return;
+      }
 
-    final error =
-    await ref
-        .read(authProvider.notifier)
-        .register(user);
+      showMessage(
+        l10n.registerSuccess,
+      );
 
+      await Future.delayed(
+        const Duration(milliseconds: 500),
+      );
 
+      if (!mounted) {
+        return;
+      }
 
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const LoginPage(),
+        ),
+      );
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
 
+      setState(() {
+        loading = false;
+      });
 
-    setState(() {
+      showMessage(
+        l10n.registerError,
+      );
+    }
+  }
 
-      loading = false;
-
-    });
-
-
-
-
-
-    final box =
-    ref.read(authBoxProvider);
-
-
-
-    print("======================");
-
-    print("REGISTER RESULT: $error");
-
-    print("USERS COUNT: ${box.length}");
-
-    print("KEYS: ${box.keys.toList()}");
-
-    print("======================");
-
-
-
-
-
-    if(error != null){
-
-      showMessage(error);
-
+  void showMessage(String message) {
+    if (!mounted) {
       return;
-
     }
 
-
-
-
-
-    showMessage(
-      l10n.registerSuccess,
-    );
-
-
-
-
-    Navigator.pushReplacement(
-
-      context,
-
-      MaterialPageRoute(
-
-        builder: (_) =>
-        const LoginPage(),
-
-      ),
-
-    );
-
-
-  }
-
-
-
-
-
-
-
-  void showMessage(String message){
-
     ScaffoldMessenger.of(context)
-        .showSnackBar(
-
-      SnackBar(
-
-        content:
-        Text(message),
-
-      ),
-
-    );
-
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+        ),
+      );
   }
-
-
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
-
-
-    final l10n =
-    AppLocalizations.of(context)!;
-
-
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-
-
-      appBar:
-
-      AppBar(
-
-        title:
-        Text(
+      appBar: AppBar(
+        title: Text(
           l10n.createInventorAccount,
         ),
-
       ),
-
-
-
-      body:
-
-      SingleChildScrollView(
-
-
-        padding:
-        const EdgeInsets.all(20),
-
-
-
-        child:
-
-        Column(
-
-
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
           children: [
+            TextField(
+              controller: nameController,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.fullName,
+                prefixIcon: const Icon(
+                  Icons.person,
+                ),
+              ),
+            ),
 
+            const SizedBox(height: 15),
 
             TextField(
-
-              controller:
-              nameController,
-
-              decoration:
-
-              InputDecoration(
-
-                labelText:
-                l10n.fullName,
-
+              controller: usernameController,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.username,
+                prefixIcon: const Icon(
+                  Icons.account_circle,
+                ),
               ),
-
             ),
 
-
-
-            const SizedBox(height:15),
-
-
+            const SizedBox(height: 15),
 
             TextField(
-
-              controller:
-              usernameController,
-
-              decoration:
-
-              InputDecoration(
-
-                labelText:
-                l10n.username,
-
+              controller: emailController,
+              keyboardType:
+                  TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.email,
+                prefixIcon: const Icon(
+                  Icons.email,
+                ),
               ),
-
             ),
 
-
-
-            const SizedBox(height:15),
-
-
+            const SizedBox(height: 15),
 
             TextField(
-
-              controller:
-              emailController,
-
-              decoration:
-
-              InputDecoration(
-
-                labelText:
-                l10n.email,
-
+              controller: specialtyController,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.specialty,
+                prefixIcon: const Icon(
+                  Icons.engineering,
+                ),
               ),
-
             ),
 
-
-
-            const SizedBox(height:15),
-
-
+            const SizedBox(height: 15),
 
             TextField(
-
-              controller:
-              specialtyController,
-
-              decoration:
-
-              InputDecoration(
-
-                labelText:
-                l10n.specialty,
-
+              controller: bioController,
+              maxLines: 3,
+              textInputAction: TextInputAction.newline,
+              decoration: InputDecoration(
+                labelText: l10n.bio,
+                prefixIcon: const Icon(
+                  Icons.description,
+                ),
               ),
-
             ),
 
-
-
-            const SizedBox(height:15),
-            TextField(
-
-              controller:
-              bioController,
-
-              maxLines:3,
-
-              decoration:
-
-              InputDecoration(
-
-                labelText:
-                l10n.bio,
-
-              ),
-
-            ),
-
-
-
-            const SizedBox(height:15),
-
-
+            const SizedBox(height: 15),
 
             TextField(
-
-              controller:
-              passwordController,
-
-              obscureText:true,
-
-              decoration:
-
-              InputDecoration(
-
-                labelText:
-                l10n.password,
-
+              controller: passwordController,
+              obscureText: true,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.password,
+                prefixIcon: const Icon(
+                  Icons.lock,
+                ),
               ),
-
             ),
 
-
-
-            const SizedBox(height:15),
-
-
+            const SizedBox(height: 15),
 
             TextField(
-
               controller:
-              confirmPasswordController,
-
-              obscureText:true,
-
-              decoration:
-
-              InputDecoration(
-
-                labelText:
-                l10n.confirmPassword,
-
+                  confirmPasswordController,
+              obscureText: true,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) {
+                if (!loading) {
+                  register();
+                }
+              },
+              decoration: InputDecoration(
+                labelText: l10n.confirmPassword,
+                prefixIcon: const Icon(
+                  Icons.lock_outline,
+                ),
               ),
-
             ),
 
+            const SizedBox(height: 30),
 
-
-            const SizedBox(height:30),
-
-
-
-            FilledButton(
-
-              onPressed:
-
-              loading
-                  ?
-              null
-                  :
-              register,
-
-
-
-              child:
-
-              loading
-
-                  ?
-
-              const CircularProgressIndicator()
-
-                  :
-
-              Text(
-                l10n.register,
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: loading ? null : register,
+                child: loading
+                    ? const SizedBox(
+                        height: 22,
+                        width: 22,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Text(
+                        l10n.register,
+                      ),
               ),
-
-
             ),
-
-
-
           ],
-
-
         ),
-
-
       ),
-
-
     );
-
-
   }
-
-
-
-
-
 
   @override
-  void dispose(){
-
-
+  void dispose() {
     nameController.dispose();
-
     usernameController.dispose();
-
     emailController.dispose();
-
     specialtyController.dispose();
-
     bioController.dispose();
-
     passwordController.dispose();
-
     confirmPasswordController.dispose();
 
-
     super.dispose();
-
   }
-
-
-
 }

@@ -163,5 +163,18 @@
 
   "aboutApp": "درباره برنامه",
 
-  "versionInfo": "نسخه InvenShare 1.0.0"
+  "versionInfo": "نسخه InvenShare 1.0.0",
+  
+
+  "usernameRequired": "نام کاربری را وارد کنید",
+
+  "passwordRequired": "رمز عبور را وارد کنید",
+
+  "passwordTooShort": "رمز عبور باید حداقل ۶ کاراکتر باشد",
+
+  "registerError": "خطا در ثبت نام",
+
+   "progress": "پیشرفت پروفایل",
+
+"loading": "در حال ورود..."
 }

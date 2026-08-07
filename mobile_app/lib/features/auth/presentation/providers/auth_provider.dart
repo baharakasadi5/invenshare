@@ -572,13 +572,8 @@ StateNotifierProvider<
 final currentUserProvider =
 Provider<UserModel?>((ref) {
 
-  final box =
-      ref.watch(authBoxProvider);
-
-
-  return box.get(
-    'currentUser',
+  return ref.watch(
+    authProvider,
   );
-
 
 });

@@ -16,9 +16,14 @@ import 'core/splash/splash_page.dart';
 import 'features/inventions/domain/entities/invention.dart';
 import 'features/favorites/data/models/favorite_model.dart';
 import 'features/auth/domain/entities/user_model.dart';
+import 'features/ideas_backup/data/models/idea_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // =========================
+  // Initialize Hive
+  // =========================
 
   await Hive.initFlutter();
 
@@ -26,38 +31,53 @@ Future<void> main() async {
   // Register Hive Adapters
   // =========================
 
+  // Invention - typeId: 0
   if (!Hive.isAdapterRegistered(0)) {
     Hive.registerAdapter(InventionAdapter());
   }
 
+  // Favorite - typeId: 2
   if (!Hive.isAdapterRegistered(2)) {
     Hive.registerAdapter(FavoriteModelAdapter());
   }
 
+  // User - typeId: 3
   if (!Hive.isAdapterRegistered(3)) {
     Hive.registerAdapter(UserModelAdapter());
   }
 
-  // =========================
-  // اگر قبلاً برای هماهنگی مدل از این کد استفاده کرده بودی،
-  // دیگر آن را اجرا نکن تا اطلاعات کاربران پاک نشوند.
-  // =========================
-
-  // if (await Hive.boxExists('users')) {
-  //   await Hive.deleteBoxFromDisk('users');
-  // }
+  // Idea - typeId: 4
+  if (!Hive.isAdapterRegistered(4)) {
+    Hive.registerAdapter(IdeaModelAdapter());
+  }
 
   // =========================
   // Open Hive Boxes
   // =========================
 
-  await Hive.openBox<Invention>('inventions');
+  await Hive.openBox<Invention>(
+    'inventions',
+  );
 
-  await Hive.openBox<FavoriteModel>('favorites');
+  await Hive.openBox<FavoriteModel>(
+    'favorites',
+  );
 
-  await Hive.openBox<UserModel>('users');
+  await Hive.openBox<UserModel>(
+    'users',
+  );
 
-  await Hive.openBox('settings');
+  await Hive.openBox<IdeaModel>(
+    'ideas',
+  );
+
+  await Hive.openBox(
+    'settings',
+  );
+
+  // =========================
+  // Start Application
+  // =========================
 
   runApp(
     const ProviderScope(
@@ -67,16 +87,30 @@ Future<void> main() async {
 }
 
 class InvenShareApp extends ConsumerWidget {
-  const InvenShareApp({super.key});
+  const InvenShareApp({
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final locale = ref.watch(localeProvider);
-    final themeMode = ref.watch(themeProvider);
-    final font = ref.watch(fontProvider);
+  Widget build(
+    BuildContext context,
+    WidgetRef ref,
+  ) {
+    final locale = ref.watch(
+      localeProvider,
+    );
+
+    final themeMode = ref.watch(
+      themeProvider,
+    );
+
+    final font = ref.watch(
+      fontProvider,
+    );
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
       title: 'InvenShare',
 
       locale: locale,
@@ -88,11 +122,16 @@ class InvenShareApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
 
-      supportedLocales: AppLocalizations.supportedLocales,
+      supportedLocales:
+          AppLocalizations.supportedLocales,
 
-      theme: AppTheme.light(font),
+      theme: AppTheme.light(
+        font,
+      ),
 
-      darkTheme: AppTheme.dark(font),
+      darkTheme: AppTheme.dark(
+        font,
+      ),
 
       themeMode: themeMode,
 

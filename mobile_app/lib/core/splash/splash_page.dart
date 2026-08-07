@@ -1,150 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../features/home/presentation/pages/inventor_dashboard_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
-
 import '../../features/auth/presentation/providers/auth_provider.dart';
-
-
+import '../../features/home/presentation/pages/inventor_dashboard_page.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
-
-
-  const SplashPage({
-    super.key,
-  });
-
-
+  const SplashPage({super.key});
 
   @override
-  ConsumerState<SplashPage> createState() =>
-      _SplashPageState();
-
-
+  ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
-
-
-
-
-class _SplashPageState
-    extends ConsumerState<SplashPage> {
-
-
-
+class _SplashPageState extends ConsumerState<SplashPage> {
   @override
-  void initState(){
-
+  void initState() {
     super.initState();
-
-    startApp();
-
+    _startApp();
   }
 
-
-
-
-
-
-
-  Future<void> startApp() async {
-
-
+  Future<void> _startApp() async {
     await Future.delayed(
-
-      const Duration(
-        seconds:3,
-      ),
-
+      const Duration(seconds: 3),
     );
 
-
-
-
-    if(!mounted) return;
-
-
-
-
-    final user =
-    ref.read(authProvider);
-
-
-
-
-
-    if(user != null){
-
-
-
-      Navigator.pushReplacement(
-
-        context,
-
-        MaterialPageRoute(
-
-          builder: (_)=>
-
-          const InventorDashboardPage(),
-
-        ),
-
-      );
-
-
+    if (!mounted) {
+      return;
     }
 
-    else{
+    final user = ref.read(authProvider);
 
-
+    if (user != null) {
       Navigator.pushReplacement(
-
         context,
-
         MaterialPageRoute(
-
-          builder: (_)=>
-
-          const LoginPage(),
-
+          builder: (_) => const InventorDashboardPage(),
         ),
-
       );
-
-
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const LoginPage(),
+        ),
+      );
     }
-
-
   }
-
-
-
-
-
-
-
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
-
-    return const Scaffold(
-
-      body:
-
-      Center(
-
-        child:
-
-        CircularProgressIndicator(),
-
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              theme.colorScheme.primary,
+              theme.colorScheme.secondary,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.lightbulb,
+                size: 90,
+                color: theme.colorScheme.onPrimary,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'InvenShare',
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  color: theme.colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 25),
+              SizedBox(
+                width: 28,
+                height: 28,
+                child: CircularProgressIndicator(
+                  color: theme.colorScheme.onPrimary,
+                  strokeWidth: 3,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-
     );
-
-
   }
-
-
 }

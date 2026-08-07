@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,661 +9,329 @@ import 'register_page.dart';
 
 import '../../../home/presentation/pages/inventor_dashboard_page.dart';
 
-
 class LoginPage extends ConsumerStatefulWidget {
-
-  const LoginPage({
-    super.key,
-  });
-
+  const LoginPage({super.key});
 
   @override
-  ConsumerState<LoginPage> createState() =>
-      _LoginPageState();
-
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-
-
-
-class _LoginPageState
-    extends ConsumerState<LoginPage> {
-
-
-  final usernameController =
+class _LoginPageState extends ConsumerState<LoginPage> {
+  final TextEditingController usernameController =
       TextEditingController();
 
-
-  final passwordController =
+  final TextEditingController passwordController =
       TextEditingController();
-
-
 
   bool loading = false;
 
-
-
-
+  // ============================================================
+  // Login
+  // ============================================================
 
   Future<void> login() async {
+    final l10n = AppLocalizations.of(context)!;
 
-
-    final l10n =
-        AppLocalizations.of(context)!;
-
-
-    final username =
-        usernameController.text.trim();
-
-
-    final password =
-        passwordController.text.trim();
-
-
-
-
+    final username = usernameController.text.trim();
+    final password = passwordController.text.trim();
 
     if (username.isEmpty || password.isEmpty) {
-
-
-      showMessage(
-        l10n.loginRequired,
-      );
-
-
+      showMessage(l10n.loginRequired);
       return;
-
     }
 
-
-
-
-
+    if (loading) {
+      return;
+    }
 
     setState(() {
-
       loading = true;
-
     });
 
+    try {
+      final success = await ref
+          .read(authProvider.notifier)
+          .login(
+            username,
+            password,
+          );
 
+      if (!mounted) {
+        return;
+      }
 
+      setState(() {
+        loading = false;
+      });
 
+      if (success) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const InventorDashboardPage(),
+          ),
+        );
+      } else {
+        showMessage(l10n.invalidLogin);
+      }
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
 
+      setState(() {
+        loading = false;
+      });
 
-
-    final success =
-
-    await ref
-        .read(authProvider.notifier)
-        .login(
-
-      username,
-
-      password,
-
-    );
-
-
-
-
-
-    if (!mounted) return;
-
-
-
-
-
-    setState(() {
-
-      loading = false;
-
-    });
-
-
-
-
-
-
-
-    if(success){
-
-
-      Navigator.pushReplacement(
-
-        context,
-
-        MaterialPageRoute(
-
-          builder: (_) =>
-
-          const InventorDashboardPage(),
-
-        ),
-
-      );
-
-
-    }else{
-
-
-      showMessage(
-
-        l10n.invalidLogin,
-
-      );
-
-
+      showMessage(l10n.invalidLogin);
     }
-
-
   }
 
+  // ============================================================
+  // Show Message
+  // ============================================================
 
-
-
-
-
-
-
-  void showMessage(String message){
-
+  void showMessage(String message) {
+    if (!mounted) {
+      return;
+    }
 
     ScaffoldMessenger.of(context)
-        .showSnackBar(
-
-      SnackBar(
-
-        content:
-
-        Text(message),
-
-      ),
-
-    );
-
-
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+        ),
+      );
   }
 
-
-
-
-
-
-
+  // ============================================================
+  // Build
+  // ============================================================
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
 
-
-    final l10n =
-        AppLocalizations.of(context)!;
-
-
-    final user =
-        ref.watch(currentUserProvider);
-
-
-
-
+    final theme = Theme.of(context);
 
     return Scaffold(
-
-
-      appBar:
-
-      AppBar(
-
-        title:
-
-        Text(
-
+      appBar: AppBar(
+        title: Text(
           l10n.loginToApp,
-
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
-
       ),
 
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
 
-
-
-
-
-
-      body:
-
-      Center(
-
-
-        child:
-
-        SingleChildScrollView(
-
-
-          padding:
-
-          const EdgeInsets.all(20),
-
-
-
-
-
-          child:
-
-
-          Card(
-
-
+          child: Card(
             elevation: 8,
 
+            child: Padding(
+              padding: const EdgeInsets.all(25),
 
-            child:
-
-
-            Padding(
-
-
-              padding:
-
-              const EdgeInsets.all(25),
-
-
-
-
-
-              child:
-
-
-              Column(
-
-
-                mainAxisSize:
-
-                MainAxisSize.min,
-
-
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
 
                 children: [
+                  // ==================================================
+                  // LOGIN IMAGE
+                  // ==================================================
 
+                  Container(
+                    width: 120,
+                    height: 120,
 
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
 
-
-
-
-                  CircleAvatar(
-
-
-                    radius: 50,
-
-
-
-                    backgroundColor:
-
-                    Colors.deepPurple,
-
-
-
-                    backgroundImage:
-
-                    user != null &&
-                        user.profileImage.isNotEmpty
-
-                        ?
-
-                    FileImage(
-
-                      File(
-
-                        user.profileImage,
-
-                      ),
-
-                    )
-
-                        :
-
-                    null,
-
-
-
-                    child:
-
-                    user == null || user.profileImage.isEmpty
-
-                        ?
-
-                    const Icon(
-
-                      Icons.person,
-
-                      size:60,
-
-                      color:Colors.white,
-
-                    )
-
-                        :
-
-                    null,
-
-
-
-                  ),
-
-
-
-
-
-
-
-                  const SizedBox(
-
-                    height:15,
-
-                  ),
-
-
-
-
-
-
-
-                  if(user != null)
-
-                    Text(
-
-                      user.username,
-
-                      style:
-
-                      Theme.of(context)
-                          .textTheme
-                          .titleLarge,
-
+                      color:
+                          theme.colorScheme.primaryContainer,
                     ),
 
+                    clipBehavior: Clip.antiAlias,
 
+                    child: Image.asset(
+                      'assets/images/inventor.png',
 
+                      fit: BoxFit.cover,
 
-
-
-
-                  const SizedBox(
-
-                    height:25,
-
+                      errorBuilder:
+                          (context, error, stackTrace) {
+                        return Icon(
+                          Icons.lightbulb,
+                          size: 65,
+                          color:
+                              theme.colorScheme.primary,
+                              );
+                      },
+                    ),
                   ),
 
+                  const SizedBox(height: 20),
 
+                  // ==================================================
+                  // TITLE
+                  // ==================================================
 
+                  Text(
+                    l10n.loginToApp,
 
+                    style:
+                        theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
 
+                    textAlign: TextAlign.center,
+                  ),
 
+                  const SizedBox(height: 25),
+
+                  // ==================================================
+                  // USERNAME
+                  // ==================================================
 
                   TextField(
+                    controller: usernameController,
 
+                    enabled: !loading,
 
-                    controller:
+                    textInputAction:
+                        TextInputAction.next,
 
-                    usernameController,
-                    decoration:
+                    decoration: InputDecoration(
+                      labelText: l10n.username,
 
-                    InputDecoration(
-
-                      labelText:
-
-                      l10n.username,
-
-
-                      prefixIcon:
-
-                      const Icon(
-
-                        Icons.person,
-
+                      prefixIcon: const Icon(
+                        Icons.person_outline,
                       ),
 
-
-                      border:
-
-                      const OutlineInputBorder(),
-
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(16),
+                      ),
                     ),
-
-
                   ),
 
+                  const SizedBox(height: 16),
 
-
-
-
-
-
-
-                  const SizedBox(
-
-                    height:15,
-
-                  ),
-
-
-
-
-
-
+                  // ==================================================
+                  // PASSWORD
+                  // ==================================================
 
                   TextField(
+                    controller: passwordController,
 
+                    enabled: !loading,
 
-                    controller:
+                    obscureText: true,
 
-                    passwordController,
+                    textInputAction:
+                        TextInputAction.done,
 
-
-
-                    obscureText:
-
-                    true,
-
-
-
-                    decoration:
-
-                    InputDecoration(
-
-                      labelText:
-
-                      l10n.password,
-
-
-                      prefixIcon:
-
-                      const Icon(
-
-                        Icons.lock,
-
-                      ),
-
-
-
-                      border:
-
-                      const OutlineInputBorder(),
-
-                    ),
-
-
-                  ),
-
-
-
-
-
-
-
-                  const SizedBox(
-
-                    height:30,
-
-                  ),
-
-
-
-
-
-
-
-                  SizedBox(
-
-                    width:
-
-                    double.infinity,
-
-
-
-                    child:
-
-
-                    FilledButton(
-
-
-                      onPressed:
-
-                      loading
-
-                          ?
-
-                      null
-
-                          :
-
-                      login,
-
-
-
-                      child:
-
-                      loading
-
-
-                          ?
-
-                      const SizedBox(
-
-                        height:22,
-
-                        width:22,
-
-                        child:
-
-                        CircularProgressIndicator(),
-
-                      )
-
-
-                          :
-
-
-                      Text(
-
-                        l10n.login,
-
-                      ),
-
-
-                    ),
-
-                  ),
-
-
-
-
-
-
-
-                  TextButton(
-
-
-                    onPressed:
-
-
-                    (){
-
-
-                      Navigator.push(
-
-                        context,
-
-                        MaterialPageRoute(
-
-                          builder: (_) =>
-
-                          const RegisterPage(),
-
-                        ),
-
-                      );
-
-
+                    onSubmitted: (_) {
+                      if (!loading) {
+                        login();
+                      }
                     },
 
+                    decoration: InputDecoration(
+                      labelText: l10n.password,
 
+                      prefixIcon: const Icon(
+                        Icons.lock_outline,
+                      ),
 
-                    child:
-
-
-                    Text(
-
-                      l10n.noAccountRegister,
-
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(16),
+                      ),
                     ),
-
-
                   ),
 
+                  const SizedBox(height: 22),
 
+                  // ==================================================
+                  // LOGIN BUTTON
+                  // ==================================================
 
+                  SizedBox(
+                    width: double.infinity,
 
+                    height: 52,
 
+                    child: FilledButton.icon(
+                      onPressed:
+                          loading ? null : login,
+
+                      icon: loading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+
+                              child:
+                                  CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Icon(
+                              Icons.login,
+                            ),
+
+                      label: Text(
+                        loading
+                            ? l10n.loading
+                            : l10n.login,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 15),
+                  // ==================================================
+                  // REGISTER
+                  // ==================================================
+
+                  TextButton(
+                    onPressed: loading
+                        ? null
+                        : () {
+                            Navigator.push(
+                              context,
+
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    const RegisterPage(),
+                              ),
+                            );
+                          },
+
+                    child: Text(
+                      l10n.noAccountRegister,
+                    ),
+                  ),
                 ],
-
               ),
-
             ),
-
           ),
-
-
         ),
-
       ),
-
     );
-
-
   }
 
-
-
-
-
-
-
+  // ============================================================
+  // Dispose
+  // ============================================================
 
   @override
-  void dispose(){
-
-
+  void dispose() {
     usernameController.dispose();
-
-
     passwordController.dispose();
 
-
     super.dispose();
-
-
   }
-
-
 }

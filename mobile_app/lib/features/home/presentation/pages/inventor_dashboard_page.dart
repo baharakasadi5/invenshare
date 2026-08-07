@@ -1,3 +1,4 @@
+import 'dart:io';
 import '../../../../l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -577,7 +578,7 @@ class InventorDashboardPage extends ConsumerWidget {
 
                           "$profileProgress%",
 
-                          "پیشرفت پروفایل",
+                          l10n.progress,
 
                           Icons.trending_up,
 
@@ -771,18 +772,50 @@ class InventorDashboardPage extends ConsumerWidget {
                   theme.colorScheme.primaryContainer,
 
 
-                  child:
+                  backgroundImage:
 
-                  const Icon(
+                  user != null &&
 
-                    Icons.person,
+                   user.profileImage.isNotEmpty
 
-                    size:35,
+      ?
 
-                  ),
+  FileImage(
+
+    File(
+
+      user.profileImage,
+
+    ),
+
+  )
+
+      :
+
+  null,
 
 
-                ),
+  child:
+
+  user == null ||
+      user.profileImage.isEmpty
+
+      ?
+
+  const Icon(
+
+    Icons.person,
+
+    size:35,
+
+  )
+
+      :
+
+  null,
+
+
+),
 
 
 

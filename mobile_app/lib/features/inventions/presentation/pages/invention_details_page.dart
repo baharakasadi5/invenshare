@@ -477,7 +477,7 @@ class InventionDetailsPage extends ConsumerWidget {
 
                       errorBuilder:
 
-                          (_,__,___){
+                             (context, error, stackTrace){
 
 
 

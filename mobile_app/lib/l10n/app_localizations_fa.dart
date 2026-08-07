@@ -307,4 +307,19 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get deleteAccount => 'حذف حساب';
+
+  @override
+  String get usernameRequired => 'نام کاربری را وارد کنید';
+
+  @override
+  String get passwordRequired => 'رمز عبور را وارد کنید';
+
+  @override
+  String get passwordTooShort => 'رمز عبور باید حداقل ۶ کاراکتر باشد';
+
+  @override
+  String get registerError => 'خطا در ثبت نام';
+
+  @override
+  String get loading => 'در حال ورود...';
 }

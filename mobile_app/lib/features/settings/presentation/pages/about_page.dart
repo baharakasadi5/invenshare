@@ -251,7 +251,7 @@ class AboutPage extends ConsumerWidget {
 
 
 
-                  error: (_,__) =>
+                  error: (context, error) =>
 
                   const Text(
 

@@ -1,21 +1,29 @@
-import '../../../../l10n/app_localizations.dart';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+
+import '../../../../l10n/app_localizations.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
 
 
+
 class EditProfilePage extends ConsumerStatefulWidget {
+
 
   const EditProfilePage({
     super.key,
   });
 
 
+
   @override
   ConsumerState<EditProfilePage> createState() =>
       _EditProfilePageState();
+
 
 }
 
@@ -23,8 +31,12 @@ class EditProfilePage extends ConsumerStatefulWidget {
 
 
 
+
+
+
 class _EditProfilePageState
     extends ConsumerState<EditProfilePage> {
+
 
 
   late TextEditingController nameController;
@@ -37,16 +49,25 @@ class _EditProfilePageState
 
 
 
+  File? selectedImage;
+
+
+
+
 
 
   @override
   void initState() {
 
+
     super.initState();
+
 
 
     final user =
     ref.read(currentUserProvider);
+
+
 
 
 
@@ -56,10 +77,14 @@ class _EditProfilePageState
         );
 
 
+
+
     emailController =
         TextEditingController(
           text: user?.email ?? '',
         );
+
+
 
 
     specialtyController =
@@ -68,13 +93,53 @@ class _EditProfilePageState
         );
 
 
+
+
     bioController =
         TextEditingController(
           text: user?.bio ?? '',
         );
 
 
+
+
+
+
+    if(user != null &&
+        user.profileImage.isNotEmpty){
+
+
+
+      final file =
+      File(
+        user.profileImage,
+      );
+
+
+
+      if(file.existsSync()){
+
+        selectedImage = file;
+
+      }
+
+
+
+    }
+
+
+
+
   }
+
+
+
+
+
+
+
+
+
   @override
   void dispose() {
 
@@ -88,7 +153,9 @@ class _EditProfilePageState
     bioController.dispose();
 
 
+
     super.dispose();
+
 
   }
 
@@ -98,6 +165,107 @@ class _EditProfilePageState
 
 
 
+
+
+  // =====================================
+  // Pick And Save Image Permanently
+  // =====================================
+
+
+  Future<void> pickImage() async {
+
+
+
+    final picker =
+    ImagePicker();
+
+
+
+
+
+    final XFile? image =
+
+    await picker.pickImage(
+
+      source:
+      ImageSource.gallery,
+
+
+      imageQuality:
+      85,
+
+
+    );
+
+
+
+
+
+    if(image == null){
+
+      return;
+
+    }
+
+
+
+
+
+
+    final directory =
+
+    await getApplicationDocumentsDirectory();
+
+
+
+
+
+    final imageName =
+
+    "profile_${DateTime.now().millisecondsSinceEpoch}.jpg";
+
+
+
+
+
+    final savedImage =
+
+    await File(image.path).copy(
+
+      "${directory.path}/$imageName",
+
+    );
+
+
+
+
+
+
+
+    if(mounted){
+
+
+      setState(() {
+
+
+        selectedImage =
+            savedImage;
+
+
+      });
+
+
+    }
+
+
+
+
+
+  }
+
+  // =====================================
+  // Save Profile
+  // =====================================
 
   Future<void> saveProfile() async {
 
@@ -124,11 +292,14 @@ class _EditProfilePageState
 
 
     final updatedUser =
+
     user.copyWith(
+
 
 
       name:
       nameController.text.trim(),
+
 
 
 
@@ -137,13 +308,31 @@ class _EditProfilePageState
 
 
 
+
       specialty:
       specialtyController.text.trim(),
 
 
 
+
       bio:
       bioController.text.trim(),
+
+
+
+
+      profileImage:
+
+      selectedImage != null
+
+          ?
+
+      selectedImage!.path
+
+          :
+
+      user.profileImage,
+
 
 
     );
@@ -155,9 +344,13 @@ class _EditProfilePageState
 
 
     await ref
+
         .read(authProvider.notifier)
+
         .updateProfile(
+
       updatedUser,
+
     );
 
 
@@ -169,8 +362,11 @@ class _EditProfilePageState
     if(mounted){
 
 
+
       ScaffoldMessenger.of(context)
+
           .showSnackBar(
+
 
 
         SnackBar(
@@ -178,23 +374,34 @@ class _EditProfilePageState
           content:
 
           Text(
+
             l10n.profileSaved,
+
           ),
 
         ),
+
 
 
       );
 
 
 
+
+
       Navigator.pop(context);
+
 
 
     }
 
 
+
+
   }
+
+
+
 
 
 
@@ -210,12 +417,23 @@ class _EditProfilePageState
       ) {
 
 
-    //final theme =
-    Theme.of(context);
-
 
     final l10n =
     AppLocalizations.of(context)!;
+
+
+
+
+    final theme =
+
+    Theme.of(context);
+
+
+
+
+
+
+
     return Scaffold(
 
 
@@ -224,11 +442,17 @@ class _EditProfilePageState
 
       AppBar(
 
+
+
         title:
 
         Text(
+
           l10n.editProfile,
+
         ),
+
+
 
       ),
 
@@ -243,9 +467,12 @@ class _EditProfilePageState
       SingleChildScrollView(
 
 
+
         padding:
 
         const EdgeInsets.all(20),
+
+
 
 
 
@@ -254,33 +481,189 @@ class _EditProfilePageState
         Column(
 
 
+
           children: [
 
 
 
 
 
+            // ===============================
+            // Profile Image
+            // ===============================
+
+
+            GestureDetector(
+
+
+
+              onTap:
+
+              pickImage,
+
+
+
+
+              child:
+
+              CircleAvatar(
+
+
+
+                radius:
+
+                55,
+
+
+
+
+
+                backgroundColor:
+
+                theme
+
+                    .colorScheme
+
+                    .primaryContainer,
+
+
+
+
+
+
+                backgroundImage:
+
+                selectedImage != null
+
+                    ?
+
+                FileImage(
+
+                  selectedImage!,
+
+                )
+
+                    :
+
+                null,
+
+
+
+
+
+
+                child:
+
+                selectedImage == null
+
+                    ?
+
+                const Icon(
+
+
+                  Icons.camera_alt,
+
+
+                  size:40,
+
+
+                )
+
+                    :
+
+                null,
+
+
+
+              ),
+
+
+
+            ),
+
+
+
+
+
+
+
+            const SizedBox(
+
+              height:15,
+
+            ),
+
+
+
+
+
+
+            Text(
+
+              "برای تغییر عکس روی تصویر بزنید",
+
+              style:
+
+              theme.textTheme.bodySmall,
+
+            ),
+
+
+
+
+
+
+            const SizedBox(
+
+              height:25,
+
+            ),
+
+
+
+
+
+
+
             TextField(
 
+
               controller:
+
               nameController,
 
 
+
+
               decoration:
 
               InputDecoration(
 
+
+
                 labelText:
+
                 l10n.name,
 
+
+
+
                 prefixIcon:
+
                 const Icon(
+
                   Icons.person,
+
                 ),
+
+
 
               ),
 
+
+
             ),
+
 
 
 
@@ -289,9 +672,10 @@ class _EditProfilePageState
 
 
             const SizedBox(
-              height:16,
-            ),
 
+              height:16,
+
+            ),
 
 
 
@@ -301,38 +685,54 @@ class _EditProfilePageState
 
             TextField(
 
+
               controller:
+
               emailController,
 
 
+
+
               keyboardType:
+
               TextInputType.emailAddress,
 
 
+
+
+
               decoration:
 
               InputDecoration(
 
+
+
                 labelText:
+
                 l10n.email,
 
+
+
+
                 prefixIcon:
+
                 const Icon(
+
                   Icons.email,
+
                 ),
+
+
 
               ),
 
+
+
             ),
+const SizedBox(
 
-
-
-
-
-
-
-            const SizedBox(
               height:16,
+
             ),
 
 
@@ -343,28 +743,47 @@ class _EditProfilePageState
 
             TextField(
 
+
               controller:
+
               specialtyController,
 
 
+
+
               decoration:
 
               InputDecoration(
 
+
+
                 labelText:
+
                 l10n.specialty,
 
 
+
+
                 hintText:
+
                 l10n.specialtyHint,
 
 
+
+
                 prefixIcon:
+
                 const Icon(
+
                   Icons.engineering,
+
                 ),
 
+
+
               ),
+
+
 
             ),
 
@@ -374,8 +793,11 @@ class _EditProfilePageState
 
 
 
+
             const SizedBox(
+
               height:16,
+
             ),
 
 
@@ -386,35 +808,56 @@ class _EditProfilePageState
 
             TextField(
 
+
               controller:
+
               bioController,
 
 
+
+
               maxLines:
+
               5,
+
+
 
 
               decoration:
 
               InputDecoration(
 
+
+
                 labelText:
+
                 l10n.bio,
 
 
+
+
                 hintText:
+
                 l10n.bioHint,
 
 
+
+
                 prefixIcon:
+
                 const Icon(
+
                   Icons.description,
+
                 ),
+
+
 
               ),
 
-            ),
 
+
+            ),
 
 
 
@@ -423,9 +866,10 @@ class _EditProfilePageState
 
 
             const SizedBox(
-              height:30,
-            ),
 
+              height:30,
+
+            ),
 
 
 
@@ -435,8 +879,14 @@ class _EditProfilePageState
 
             SizedBox(
 
+
+
               width:
+
               double.infinity,
+
+
+
 
 
               child:
@@ -444,28 +894,45 @@ class _EditProfilePageState
               FilledButton.icon(
 
 
+
                 onPressed:
+
                 saveProfile,
+
+
+
 
 
                 icon:
 
                 const Icon(
+
                   Icons.save,
+
                 ),
+
+
+
 
 
 
                 label:
 
                 Text(
+
                   l10n.save,
+
                 ),
+
 
 
               ),
 
+
+
             ),
+
+
 
 
 
@@ -473,16 +940,21 @@ class _EditProfilePageState
           ],
 
 
+
         ),
+
 
 
       ),
 
 
+
     );
 
 
+
   }
+
 
 
 }

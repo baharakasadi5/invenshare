@@ -163,5 +163,17 @@
 
   "newPassword": "New Password",
 
-  "deleteAccount": "Delete Account"
+  "deleteAccount": "Delete Account",
+
+  "usernameRequired": "Username is required",
+
+  "passwordRequired": "Password is required",
+
+  "passwordTooShort": "Password must be at least 6 characters",
+
+  "registerError": "Registration error",
+
+  "progress": "Profile Progress",
+
+"loading": "Loading..."
 }

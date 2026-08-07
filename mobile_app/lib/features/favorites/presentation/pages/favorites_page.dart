@@ -174,13 +174,13 @@ class FavoritesPage extends ConsumerWidget {
 
         separatorBuilder:
 
-            (_, __) =>
+    (_, _) =>
 
-        const SizedBox(
+const SizedBox(
 
-          height:12,
+  height:12,
 
-        ),
+),
 
 
 
