@@ -49,22 +49,119 @@
   "favorite": "علاقه‌مندی",
 
   "editInvention": "ویرایش اختراع",
-
   "saveChanges": "ذخیره تغییرات",
-
-  "editInventionTitle": "عنوان اختراع",
-  "editInventionDescription": "توضیحات اختراع",
 
   "darkMode": "حالت تاریک",
   "enabled": "فعال",
   "disabled": "غیرفعال",
 
-
   "appDescription": "پلتفرم ثبت، مدیریت و توسعه ایده‌ها و اختراعات",
 
   "version": "نسخه",
-
   "technology": "فناوری",
+  "developer": "توسعه‌دهنده",
 
-  "developer": "توسعه‌دهنده"
+  "dashboard": "داشبورد مخترع",
+
+  "profile": "پروفایل",
+  "profileTitle": "پروفایل مخترع",
+  "profileInventor": "پروفایل مخترع",
+  "profileImage": "تغییر عکس پروفایل",
+
+  "notLoggedIn": "کاربری وارد نشده است",
+  "notSet": "تنظیم نشده",
+
+  "inventor": "مخترع و نوآور",
+
+  "activity": "آمار فعالیت",
+  "statistics": "آمار",
+
+  "inventions": "اختراعات",
+  "ideas": "ایده‌ها",
+
+  "progress": "پیشرفت پروفایل",
+
+  "quickAccess": "دسترسی سریع",
+
+  "logout": "خروج از حساب",
+
+  "backToLogin": "بازگشت به صفحه ورود",
+
+  "login": "ورود",
+
+  "username": "نام کاربری",
+
+  "password": "رمز عبور",
+
+  "register": "ثبت نام",
+
+  "welcome": "خوش آمدید",
+
+  "registerIdea": "ثبت ایده جدید",
+
+  "name": "نام",
+
+  "email": "ایمیل",
+
+  "specialty": "تخصص",
+
+  "bio": "معرفی مخترع",
+
+  "role": "نقش",
+
+  "membership": "عضویت",
+
+  "editProfile": "ویرایش پروفایل",
+
+  "specialtyHint": "مثلا هوش مصنوعی، معماری، مکانیک",
+
+  "bioHint": "درباره خود و فعالیت‌های نوآورانه بنویسید",
+
+  "profileSaved": "پروفایل با موفقیت ذخیره شد",
+
+  "loginRequired": "نام کاربری و رمز عبور را وارد کنید",
+
+  "invalidLogin": "نام کاربری یا رمز عبور اشتباه است",
+
+  "loginToApp": "ورود به InvenShare",
+
+  "noAccountRegister": "حساب ندارید؟ ثبت نام",
+
+  "passwordMismatch": "رمز عبور با تکرار آن یکسان نیست",
+
+  "registerSuccess": "ثبت نام با موفقیت انجام شد",
+
+  "createInventorAccount": "ساخت حساب مخترع",
+
+  "fullName": "نام کامل",
+
+  "specialtyHintRegister": "مثلا معماری، هوش مصنوعی، مکانیک",
+
+  "bioHintRegister": "درباره خود و ایده‌های خود بنویسید",
+
+  "confirmPassword": "تکرار رمز عبور",
+
+  "changePassword": "تغییر رمز عبور",
+
+  "newPassword": "رمز عبور جدید",
+
+  "deleteAccount": "حذف حساب",
+
+  "languageOptions": "فارسی / English",
+
+  "backupData": "پشتیبان‌گیری اطلاعات",
+
+  "createBackup": "ایجاد نسخه پشتیبان از اختراعات",
+
+  "backupCreated": "نسخه پشتیبان ایجاد شد:",
+
+  "restoreData": "بازیابی اطلاعات",
+
+  "restoreBackup": "بازیابی فایل پشتیبان",
+
+  "restoreCompleted": "بازیابی با موفقیت انجام شد",
+
+  "aboutApp": "درباره برنامه",
+
+  "versionInfo": "نسخه InvenShare 1.0.0"
 }

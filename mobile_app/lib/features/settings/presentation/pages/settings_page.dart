@@ -1,25 +1,24 @@
-import '../../../../core/services/backup_service.dart';
-import 'about_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../l10n/app_localizations.dart';
 
+import '../../../../core/services/backup_service.dart';
 import '../../../../core/providers/theme_provider.dart';
-import '../../../../core/providers/font_provider.dart';
-import '../../../../core/providers/color_provider.dart';
+
+import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../auth/presentation/pages/login_page.dart';
 
 import 'language_page.dart';
-
+import 'about_page.dart';
+import 'profile_page.dart';
 
 
 class SettingsPage extends ConsumerWidget {
 
-
   const SettingsPage({
     super.key,
   });
-
 
 
   @override
@@ -33,67 +32,20 @@ class SettingsPage extends ConsumerWidget {
     AppLocalizations.of(context)!;
 
 
-
-    final currentTheme =
+    final theme =
     ref.watch(themeProvider);
 
 
-
     final isDark =
-        currentTheme == ThemeMode.dark;
+        theme == ThemeMode.dark;
 
 
-
-    final currentSeedColor =
-    ref.watch(seedColorProvider);
-
-
-
-    final currentFont =
-    ref.watch(fontProvider);
-
-
-
-
-
-    final colors = [
-
-      const Color(0xFF5B38B5),
-
-      Colors.blue,
-
-      Colors.green,
-
-      Colors.orange,
-
-      Colors.red,
-
-      Colors.teal,
-
-    ];
-
-
-
-
-
-    final fonts = [
-
-      "Vazir",
-
-      "Roboto",
-
-      "Arial",
-
-    ];
-
-
-
-
+    final user =
+    ref.watch(currentUserProvider);
 
 
 
     return Scaffold(
-
 
 
       appBar: AppBar(
@@ -101,20 +53,18 @@ class SettingsPage extends ConsumerWidget {
         title:
 
         Text(
-
           l10n.settings,
-
         ),
+
+        centerTitle: true,
 
       ),
 
 
 
+      body:
 
-
-      body: ListView(
-
-
+      ListView(
 
         padding:
 
@@ -126,6 +76,114 @@ class SettingsPage extends ConsumerWidget {
 
 
 
+          // Profile
+
+
+          Card(
+
+            child: ListTile(
+
+
+              leading:
+
+              CircleAvatar(
+
+                backgroundColor:
+
+                Theme.of(context)
+                    .colorScheme
+                    .primaryContainer,
+
+
+                child:
+
+                const Icon(
+                  Icons.person,
+                ),
+
+              ),
+
+
+
+              title:
+
+              Text(
+                l10n.profileInventor,
+              ),
+
+
+
+              subtitle:
+
+              Text(
+
+                user == null
+
+                    ?
+
+                l10n.notLoggedIn
+
+                    :
+
+                user.name.isEmpty
+
+                    ?
+
+                user.username
+
+                    :
+
+                user.name,
+
+              ),
+
+
+
+              trailing:
+
+              const Icon(
+                Icons.arrow_forward_ios,
+              ),
+
+
+
+              onTap: (){
+
+
+                Navigator.push(
+
+                  context,
+
+                  MaterialPageRoute(
+
+                    builder: (_) =>
+
+                    const ProfilePage(),
+
+                  ),
+
+                );
+
+
+              },
+
+
+            ),
+
+          ),
+
+
+
+
+
+
+          const SizedBox(
+            height:16,
+          ),
+
+
+
+
 
 
           // Language
@@ -134,6 +192,7 @@ class SettingsPage extends ConsumerWidget {
           Card(
 
             child: ListTile(
+
 
               leading:
 
@@ -153,8 +212,8 @@ class SettingsPage extends ConsumerWidget {
 
               subtitle:
 
-              const Text(
-                'فارسی / English',
+              Text(
+                l10n.languageOptions,
               ),
 
 
@@ -167,7 +226,7 @@ class SettingsPage extends ConsumerWidget {
 
 
 
-              onTap: () {
+              onTap: (){
 
 
                 Navigator.push(
@@ -192,85 +251,32 @@ class SettingsPage extends ConsumerWidget {
 
           ),
 
-          const SizedBox(height: 16),
 
-// Backup
-Card(
-  child: ListTile(
-    leading: const Icon(Icons.backup),
-    title: const Text("Backup Data"),
-    subtitle: const Text("Create backup of all inventions"),
-    trailing: const Icon(Icons.arrow_forward_ios),
-    onTap: () async {
-      final path = await BackupService.createBackup();
 
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "Backup created:\n$path",
-            ),
+
+
+
+          const SizedBox(
+            height:16,
           ),
-        );
-      }
-    },
-  ),
-),
-
-const SizedBox(height: 12),
-
-// Restore
-Card(
-  child: ListTile(
-    leading: const Icon(Icons.restore),
-    title: const Text("Restore Data"),
-    subtitle: const Text("Restore backup file"),
-    trailing: const Icon(Icons.arrow_forward_ios),
-    onTap: () async {
-      await BackupService.restoreBackup();
-
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Restore completed",
-            ),
-          ),
-        );
-      }
-    },
-  ),
-),
-        
-const SizedBox(height: 16),
-
-
-          const SizedBox(height:16),
 
 
 
 
 
 
-
-          // Dark Mode
+          // Backup
 
 
           Card(
 
-            child: SwitchListTile(
+            child: ListTile(
 
 
-              secondary:
+              leading:
 
-              Icon(
-
-                isDark
-
-                    ? Icons.dark_mode
-
-                    : Icons.light_mode,
-
+              const Icon(
+                Icons.backup,
               ),
 
 
@@ -278,7 +284,7 @@ const SizedBox(height: 16),
               title:
 
               Text(
-                l10n.darkMode,
+                l10n.backupData,
               ),
 
 
@@ -286,31 +292,42 @@ const SizedBox(height: 16),
               subtitle:
 
               Text(
-
-                isDark
-
-                    ? l10n.enabled
-
-                    : l10n.disabled,
-
+                l10n.createBackup,
               ),
 
 
 
-              value:
-
-              isDark,
+              onTap: () async{
 
 
+                final path =
 
-              onChanged: (value){
+                await BackupService.createBackup();
 
 
-                ref
 
-                    .read(themeProvider.notifier)
+                if(context.mounted){
 
-                    .toggleTheme();
+
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(
+
+
+                    SnackBar(
+
+                      content:
+
+                      Text(
+
+                        "${l10n.backupCreated}\n$path",
+
+                      ),
+
+                    ),
+                    );
+
+
+                }
 
 
               },
@@ -325,214 +342,8 @@ const SizedBox(height: 16),
 
 
 
-
-
-          const SizedBox(height:16),
-
-
-
-
-
-
-
-          // Seed Color
-
-
-          Card(
-
-
-            child: Padding(
-
-
-              padding:
-
-              const EdgeInsets.all(16),
-
-
-
-              child: Column(
-
-
-                crossAxisAlignment:
-
-                CrossAxisAlignment.start,
-
-
-
-                children: [
-
-
-
-                  const Text(
-
-                    'رنگ اصلی برنامه',
-
-                    style:
-
-                    TextStyle(
-
-                      fontSize:18,
-
-                      fontWeight:
-
-                      FontWeight.bold,
-
-                    ),
-
-                  ),
-
-
-
-
-
-                  const SizedBox(height:16),
-
-
-
-
-
-                  Wrap(
-
-
-                    spacing:
-
-                    14,
-
-
-                    children:
-
-                    colors.map((color){
-
-
-
-                      final selected =
-
-                      color.value ==
-
-                          currentSeedColor.value;
-
-
-
-
-
-                      return GestureDetector(
-
-
-
-                        onTap: (){
-
-
-                          ref
-
-                              .read(
-
-                            seedColorProvider.notifier,
-                            )
-
-                              .changeColor(
-
-                            color,
-
-                          );
-
-
-                        },
-
-
-
-
-                        child: Container(
-
-
-
-                          width:
-
-                          45,
-
-
-
-                          height:
-
-                          45,
-
-
-
-                          decoration:
-
-                          BoxDecoration(
-
-
-
-                            color:
-
-                            color,
-
-
-
-                            shape:
-
-                            BoxShape.circle,
-
-
-
-                            border:
-
-                            selected
-
-                                ?
-
-                            Border.all(
-
-                              width:4,
-
-                              color:
-
-                              Theme.of(context)
-
-                                  .colorScheme
-
-                                  .onSurface,
-
-                            )
-
-                                :
-
-                            null,
-
-
-                          ),
-
-
-
-                        ),
-
-
-
-                      );
-
-
-
-
-                    }).toList(),
-
-
-
-                  ),
-
-
-
-                ],
-
-
-
-              ),
-
-
-
-            ),
-
-
-
+          const SizedBox(
+            height:12,
           ),
 
 
@@ -540,179 +351,367 @@ const SizedBox(height: 16),
 
 
 
-
-          const SizedBox(height:16),
-
-
-
-
-
-
-
-          // Font Selector
+          // Restore
 
 
           Card(
 
-
-            child: Column(
-
-
-              children: [
+            child: ListTile(
 
 
+              leading:
 
-                ListTile(
-
-
-                  leading:
-
-                  const Icon(
-
-                    Icons.font_download,
-
-                  ),
+              const Icon(
+                Icons.restore,
+              ),
 
 
 
-                  title:
+              title:
 
-                  const Text(
-
-                    'فونت برنامه',
-
-                  ),
+              Text(
+                l10n.restoreData,
+              ),
 
 
 
-                  subtitle:
+              subtitle:
 
-                  Text(
-
-                    currentFont,
-
-                  ),
+              Text(
+                l10n.restoreBackup,
+              ),
 
 
 
-                ),
+              onTap: () async{
+
+
+                await BackupService.restoreBackup();
 
 
 
+                if(context.mounted){
 
 
-                ...fonts.map((font){
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(
 
 
-                  return RadioListTile<String>(
+                    SnackBar(
 
+                      content:
 
-                    title:
+                      Text(
 
-                    Text(
-
-                      font,
-
-                      style:
-
-                      TextStyle(
-
-                        fontFamily:
-
-                        font,
+                        l10n.restoreCompleted,
 
                       ),
 
                     ),
 
 
-
-                    value:
-
-                    font,
-
-
-
-                    groupValue:
-
-                    currentFont,
-
-
-
-                    onChanged:
-
-                    (value){
-
-
-
-                      if(value != null){
-
-
-                        ref
-
-                            .read(
-
-                          fontProvider.notifier,
-
-                        )
-
-                            .changeFont(
-
-                          value,
-
-                        );
-
-
-                      }
-
-
-
-                    },
-
-
                   );
 
 
-
-                }),
-
+                }
 
 
-              ],
+              },
+
+
+            ),
+
+          ),
+
+
+
+
+
+
+          const SizedBox(
+            height:16,
+          ),
+
+
+
+
+
+
+          // Theme
+
+
+          Card(
+
+
+            child:
+
+            SwitchListTile(
+
+
+
+              secondary:
+
+              Icon(
+
+                isDark
+
+                    ?
+
+                Icons.dark_mode
+
+                    :
+
+                Icons.light_mode,
+
+              ),
+
+
+
+
+              title:
+
+              Text(
+                l10n.darkMode,
+              ),
+
+
+
+
+              subtitle:
+
+              Text(
+
+                isDark
+
+                    ?
+
+                l10n.enabled
+
+                    :
+
+                l10n.disabled,
+
+              ),
+
+
+
+
+              value:
+
+              isDark,
+
+
+
+
+              onChanged: (_) async{
+
+
+                await ref
+
+                    .read(
+                  themeProvider.notifier,
+                )
+
+                    .toggleTheme();
+
+
+              },
 
 
             ),
 
 
+          ),
+
+
+
+
+
+
+          const SizedBox(
+            height:16,
+          ),
+
+
+
+
+
+
+          // About
+
+
+          Card(
+
+            child: ListTile(
+
+
+
+              leading:
+
+              const Icon(
+                Icons.info_outline,
+              ),
+
+
+
+
+              title:
+
+              Text(
+                l10n.aboutApp,
+              ),
+
+
+
+
+              subtitle:
+
+              Text(
+                l10n.versionInfo,
+              ),
+
+
+
+
+              trailing:
+
+              const Icon(
+                Icons.arrow_forward_ios,
+              ),
+
+
+
+
+              onTap: (){
+
+
+                Navigator.push(
+
+                  context,
+
+                  MaterialPageRoute(
+
+                    builder: (_) =>
+
+                    const AboutPage(),
+
+                  ),
+
+                );
+
+
+              },
+
+
+            ),
 
           ),
 
 
-// About
-Card(
-  child: ListTile(
-    leading: const Icon(Icons.info_outline),
-    title: const Text("About"),
-    subtitle: const Text("Version 1.0.0"),
-    trailing: const Icon(Icons.arrow_forward_ios),
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const AboutPage(),
-        ),
-      );
-    },
-  ),
-),
+
+
+
+
+          const SizedBox(
+            height:16,
+          ),
+
+
+
+
+
+
+          // Logout
+
+
+          Card(
+
+            child: ListTile(
+
+
+
+              leading:
+
+              const Icon(
+
+                Icons.logout,
+
+                color: Colors.red,
+
+              ),
+
+
+
+
+              title:
+
+              Text(
+                l10n.logout,
+              ),
+
+
+
+
+              subtitle:
+
+              Text(
+                l10n.backToLogin,
+              ),
+
+
+
+
+              onTap: () async{
+
+
+                await ref
+
+                    .read(
+                  authProvider.notifier,
+                )
+
+                    .logout();
+
+
+
+
+                if(context.mounted){
+
+
+                  Navigator.pushAndRemoveUntil(
+
+                    context,
+
+                    MaterialPageRoute(
+
+                      builder: (_) =>
+
+                      const LoginPage(),
+
+                    ),
+
+
+                        (route)=>false,
+
+                  );
+
+
+                }
+
+
+              },
+
+
+            ),
+
+          ),
+
 
 
         ],
 
 
-
       ),
-
 
 
     );

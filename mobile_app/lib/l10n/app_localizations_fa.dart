@@ -123,12 +123,6 @@ class AppLocalizationsFa extends AppLocalizations {
   String get saveChanges => 'ذخیره تغییرات';
 
   @override
-  String get editInventionTitle => 'عنوان اختراع';
-
-  @override
-  String get editInventionDescription => 'توضیحات اختراع';
-
-  @override
   String get darkMode => 'حالت تاریک';
 
   @override
@@ -148,4 +142,169 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get developer => 'توسعه‌دهنده';
+
+  @override
+  String get dashboard => 'داشبورد مخترع';
+
+  @override
+  String get profile => 'پروفایل';
+
+  @override
+  String get profileTitle => 'پروفایل مخترع';
+
+  @override
+  String get profileInventor => 'پروفایل مخترع';
+
+  @override
+  String get profileImage => 'تغییر عکس پروفایل';
+
+  @override
+  String get notLoggedIn => 'کاربری وارد نشده است';
+
+  @override
+  String get notSet => 'تنظیم نشده';
+
+  @override
+  String get inventor => 'مخترع و نوآور';
+
+  @override
+  String get activity => 'آمار فعالیت';
+
+  @override
+  String get statistics => 'آمار';
+
+  @override
+  String get inventions => 'اختراعات';
+
+  @override
+  String get ideas => 'ایده‌ها';
+
+  @override
+  String get progress => 'پیشرفت پروفایل';
+
+  @override
+  String get quickAccess => 'دسترسی سریع';
+
+  @override
+  String get logout => 'خروج از حساب';
+
+  @override
+  String get backToLogin => 'بازگشت به صفحه ورود';
+
+  @override
+  String get login => 'ورود';
+
+  @override
+  String get username => 'نام کاربری';
+
+  @override
+  String get password => 'رمز عبور';
+
+  @override
+  String get register => 'ثبت نام';
+
+  @override
+  String get welcome => 'خوش آمدید';
+
+  @override
+  String get registerIdea => 'ثبت ایده جدید';
+
+  @override
+  String get name => 'نام';
+
+  @override
+  String get email => 'ایمیل';
+
+  @override
+  String get specialty => 'تخصص';
+
+  @override
+  String get bio => 'معرفی مخترع';
+
+  @override
+  String get role => 'نقش';
+
+  @override
+  String get membership => 'عضویت';
+
+  @override
+  String get editProfile => 'ویرایش پروفایل';
+
+  @override
+  String get specialtyHint => 'مثلا هوش مصنوعی، معماری، مکانیک';
+
+  @override
+  String get bioHint => 'درباره خود و فعالیت‌های نوآورانه بنویسید';
+
+  @override
+  String get profileSaved => 'پروفایل با موفقیت ذخیره شد';
+
+  @override
+  String get loginRequired => 'نام کاربری و رمز عبور را وارد کنید';
+
+  @override
+  String get invalidLogin => 'نام کاربری یا رمز عبور اشتباه است';
+
+  @override
+  String get loginToApp => 'ورود به InvenShare';
+
+  @override
+  String get noAccountRegister => 'حساب ندارید؟ ثبت نام';
+
+  @override
+  String get passwordMismatch => 'رمز عبور با تکرار آن یکسان نیست';
+
+  @override
+  String get registerSuccess => 'ثبت نام با موفقیت انجام شد';
+
+  @override
+  String get createInventorAccount => 'ساخت حساب مخترع';
+
+  @override
+  String get fullName => 'نام کامل';
+
+  @override
+  String get specialtyHintRegister => 'مثلا معماری، هوش مصنوعی، مکانیک';
+
+  @override
+  String get bioHintRegister => 'درباره خود و ایده‌های خود بنویسید';
+
+  @override
+  String get confirmPassword => 'تکرار رمز عبور';
+
+  @override
+  String get languageOptions => 'فارسی / English';
+
+  @override
+  String get backupData => 'پشتیبان‌گیری اطلاعات';
+
+  @override
+  String get createBackup => 'ایجاد نسخه پشتیبان از اختراعات';
+
+  @override
+  String get backupCreated => 'نسخه پشتیبان ایجاد شد:';
+
+  @override
+  String get restoreData => 'بازیابی اطلاعات';
+
+  @override
+  String get restoreBackup => 'بازیابی فایل پشتیبان';
+
+  @override
+  String get restoreCompleted => 'بازیابی با موفقیت انجام شد';
+
+  @override
+  String get aboutApp => 'درباره برنامه';
+
+  @override
+  String get versionInfo => 'نسخه InvenShare 1.0.0';
+
+  @override
+  String get changePassword => 'تغییر رمز عبور';
+
+  @override
+  String get newPassword => 'رمز عبور جدید';
+
+  @override
+  String get deleteAccount => 'حذف حساب';
 }

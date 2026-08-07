@@ -72,7 +72,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noInventionFound => 'No invention found';
 
   @override
-  String get deleteInvention => 'Delete invention';
+  String get deleteInvention => 'Delete Invention';
 
   @override
   String get deleteConfirm => 'Are you sure?';
@@ -90,19 +90,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unknown => 'Unknown';
 
   @override
-  String get initialRegistration => 'Initial registration';
+  String get initialRegistration => 'Initial Registration';
 
   @override
-  String get addNewInvention => 'Add new invention';
+  String get addNewInvention => 'Add New Invention';
 
   @override
-  String get inventionTitle => 'Invention title';
+  String get inventionTitle => 'Invention Title';
 
   @override
-  String get inventionDescription => 'Invention description';
+  String get inventionDescription => 'Invention Description';
 
   @override
-  String get saveInvention => 'Save invention';
+  String get saveInvention => 'Save Invention';
 
   @override
   String get date => 'Registration Date';
@@ -123,12 +123,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveChanges => 'Save Changes';
 
   @override
-  String get editInventionTitle => 'Invention Title';
-
-  @override
-  String get editInventionDescription => 'Invention Description';
-
-  @override
   String get darkMode => 'Dark Mode';
 
   @override
@@ -138,7 +132,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get disabled => 'Disabled';
 
   @override
-  String get appDescription => 'A platform for inventors and innovative ideas';
+  String get appDescription => 'A platform for registering, managing and developing ideas and inventions';
 
   @override
   String get version => 'Version';
@@ -148,4 +142,169 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get developer => 'Developer';
+
+  @override
+  String get dashboard => 'Inventor Dashboard';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get profileTitle => 'Inventor Profile';
+
+  @override
+  String get profileInventor => 'Inventor Profile';
+
+  @override
+  String get profileImage => 'Change Profile Image';
+
+  @override
+  String get notLoggedIn => 'No user logged in';
+
+  @override
+  String get notSet => 'Not set';
+
+  @override
+  String get inventor => 'Inventor and Innovator';
+
+  @override
+  String get activity => 'Activity Statistics';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get inventions => 'Inventions';
+
+  @override
+  String get ideas => 'Ideas';
+
+  @override
+  String get progress => 'Profile Progress';
+
+  @override
+  String get quickAccess => 'Quick Access';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get backToLogin => 'Return to Login Page';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get username => 'Username';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get register => 'Register';
+
+  @override
+  String get welcome => 'Welcome';
+
+  @override
+  String get registerIdea => 'Register New Idea';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get specialty => 'Specialty';
+
+  @override
+  String get bio => 'Biography';
+
+  @override
+  String get role => 'Role';
+
+  @override
+  String get membership => 'Membership';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get specialtyHint => 'Example: AI, Architecture, Mechanics';
+
+  @override
+  String get bioHint => 'Write about yourself and your innovative activities';
+
+  @override
+  String get profileSaved => 'Profile saved successfully';
+
+  @override
+  String get loginRequired => 'Please enter username and password';
+
+  @override
+  String get invalidLogin => 'Incorrect username or password';
+
+  @override
+  String get loginToApp => 'Login to InvenShare';
+
+  @override
+  String get noAccountRegister => 'Don\'t have an account? Register';
+
+  @override
+  String get passwordMismatch => 'Passwords do not match';
+
+  @override
+  String get registerSuccess => 'Registration successful';
+
+  @override
+  String get createInventorAccount => 'Create Inventor Account';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get specialtyHintRegister => 'Example: Architecture, AI, Mechanics';
+
+  @override
+  String get bioHintRegister => 'Write about yourself and your ideas';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get languageOptions => 'Persian / English';
+
+  @override
+  String get backupData => 'Backup Data';
+
+  @override
+  String get createBackup => 'Create backup of inventions';
+
+  @override
+  String get backupCreated => 'Backup created:';
+
+  @override
+  String get restoreData => 'Restore Data';
+
+  @override
+  String get restoreBackup => 'Restore backup file';
+
+  @override
+  String get restoreCompleted => 'Restore completed';
+
+  @override
+  String get aboutApp => 'About Application';
+
+  @override
+  String get versionInfo => 'InvenShare Version 1.0.0';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get deleteAccount => 'Delete Account';
 }

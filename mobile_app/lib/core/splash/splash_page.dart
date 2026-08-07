@@ -1,9 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../features/home/presentation/pages/main_navigation_page.dart';
+import '../../features/home/presentation/pages/inventor_dashboard_page.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+
+import '../../features/auth/presentation/providers/auth_provider.dart';
 
 
 
@@ -20,7 +21,9 @@ class SplashPage extends ConsumerStatefulWidget {
   ConsumerState<SplashPage> createState() =>
       _SplashPageState();
 
+
 }
+
 
 
 
@@ -29,11 +32,11 @@ class _SplashPageState
     extends ConsumerState<SplashPage> {
 
 
+
   @override
-  void initState() {
+  void initState(){
 
     super.initState();
-
 
     startApp();
 
@@ -43,14 +46,19 @@ class _SplashPageState
 
 
 
+
+
   Future<void> startApp() async {
 
 
     await Future.delayed(
+
       const Duration(
-        seconds: 3,
+        seconds:3,
       ),
+
     );
+
 
 
 
@@ -58,18 +66,54 @@ class _SplashPageState
 
 
 
-    Navigator.pushReplacement(
 
-      context,
+    final user =
+    ref.read(authProvider);
 
-      MaterialPageRoute(
 
-        builder: (_) =>
-        const MainNavigationPage(),
 
-      ),
 
-    );
+
+    if(user != null){
+
+
+
+      Navigator.pushReplacement(
+
+        context,
+
+        MaterialPageRoute(
+
+          builder: (_)=>
+
+          const InventorDashboardPage(),
+
+        ),
+
+      );
+
+
+    }
+
+    else{
+
+
+      Navigator.pushReplacement(
+
+        context,
+
+        MaterialPageRoute(
+
+          builder: (_)=>
+
+          const LoginPage(),
+
+        ),
+
+      );
+
+
+    }
 
 
   }
@@ -80,218 +124,22 @@ class _SplashPageState
 
 
 
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
 
 
-    return Scaffold(
-
+    return const Scaffold(
 
       body:
 
-      Container(
-
-        width:
-        double.infinity,
-
-
-        height:
-        double.infinity,
-
-
-
-        decoration:
-
-        BoxDecoration(
-
-
-          gradient:
-
-          LinearGradient(
-
-
-            colors: [
-
-              Theme.of(context)
-                  .colorScheme
-                  .primary,
-
-              Theme.of(context)
-                  .colorScheme
-                  .secondary,
-
-            ],
-
-
-            begin:
-            Alignment.topLeft,
-
-
-            end:
-            Alignment.bottomRight,
-
-
-          ),
-
-
-        ),
-
-
-
-
+      Center(
 
         child:
 
-        Column(
-
-
-          mainAxisAlignment:
-          MainAxisAlignment.center,
-
-
-
-          children: [
-
-
-
-
-
-            Container(
-
-              width:
-              120,
-
-
-              height:
-              120,
-
-
-
-              decoration:
-
-              BoxDecoration(
-
-
-                color:
-                Colors.white,
-
-
-                borderRadius:
-                BorderRadius.circular(30),
-
-
-              ),
-
-
-
-
-              child:
-
-              const Icon(
-
-                Icons.lightbulb,
-
-
-                size:
-                70,
-
-
-                color:
-                Colors.deepPurple,
-
-              ),
-
-
-            ),
-
-
-
-
-
-
-            const SizedBox(
-              height:30,
-            ),
-
-
-
-
-
-            const Text(
-
-              "InvenShare",
-
-
-              style:
-
-              TextStyle(
-
-
-                fontSize:
-                36,
-
-
-                fontWeight:
-                FontWeight.bold,
-
-
-                color:
-                Colors.white,
-
-
-              ),
-
-
-            ),
-
-
-
-
-
-
-            const SizedBox(
-              height:15,
-            ),
-
-
-
-
-
-            const Text(
-
-              "Invent • Share • Create",
-
-
-              style:
-
-              TextStyle(
-
-
-                fontSize:
-                16,
-
-
-                color:
-                Colors.white70,
-
-
-              ),
-
-
-            ),
-
-
-
-
-
-          ],
-
-
-        ),
-
+        CircularProgressIndicator(),
 
       ),
-
 
     );
 

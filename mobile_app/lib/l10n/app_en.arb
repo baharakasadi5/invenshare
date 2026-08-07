@@ -26,41 +26,142 @@
   "all": "All",
   "noInventionFound": "No invention found",
 
-  "deleteInvention": "Delete invention",
+  "deleteInvention": "Delete Invention",
   "deleteConfirm": "Are you sure?",
 
   "noFavorites": "No invention has been added to favorites yet",
 
   "enterTitle": "Please enter invention title",
+
   "other": "Other",
   "unknown": "Unknown",
-  "initialRegistration": "Initial registration",
+  "initialRegistration": "Initial Registration",
 
-  "addNewInvention": "Add new invention",
-  "inventionTitle": "Invention title",
-  "inventionDescription": "Invention description",
-  "saveInvention": "Save invention",
+  "addNewInvention": "Add New Invention",
+  "inventionTitle": "Invention Title",
+  "inventionDescription": "Invention Description",
+  "saveInvention": "Save Invention",
 
   "date": "Registration Date",
   "images": "Invention Images",
   "noImages": "No image has been added",
 
   "favorite": "Favorite",
-  "editInvention": "Edit Invention",
 
+  "editInvention": "Edit Invention",
   "saveChanges": "Save Changes",
-  "editInventionTitle": "Invention Title",
-  "editInventionDescription": "Invention Description",
 
   "darkMode": "Dark Mode",
   "enabled": "Enabled",
   "disabled": "Disabled",
 
-  "appDescription": "A platform for inventors and innovative ideas",
+  "appDescription": "A platform for registering, managing and developing ideas and inventions",
 
   "version": "Version",
-
   "technology": "Technology",
+  "developer": "Developer",
 
-  "developer": "Developer"
+  "dashboard": "Inventor Dashboard",
+
+  "profile": "Profile",
+  "profileTitle": "Inventor Profile",
+  "profileInventor": "Inventor Profile",
+  "profileImage": "Change Profile Image",
+
+  "notLoggedIn": "No user logged in",
+  "notSet": "Not set",
+
+  "inventor": "Inventor and Innovator",
+
+  "activity": "Activity Statistics",
+  "statistics": "Statistics",
+
+  "inventions": "Inventions",
+  "ideas": "Ideas",
+
+  "progress": "Profile Progress",
+
+  "quickAccess": "Quick Access",
+
+  "logout": "Logout",
+
+  "backToLogin": "Return to Login Page",
+
+  "login": "Login",
+
+  "username": "Username",
+
+  "password": "Password",
+
+  "register": "Register",
+
+  "welcome": "Welcome",
+
+  "registerIdea": "Register New Idea",
+
+  "name": "Name",
+
+  "email": "Email",
+
+  "specialty": "Specialty",
+
+  "bio": "Biography",
+
+  "role": "Role",
+
+  "membership": "Membership",
+
+  "editProfile": "Edit Profile",
+
+  "specialtyHint": "Example: AI, Architecture, Mechanics",
+
+  "bioHint": "Write about yourself and your innovative activities",
+
+  "profileSaved": "Profile saved successfully",
+
+  "loginRequired": "Please enter username and password",
+
+  "invalidLogin": "Incorrect username or password",
+
+  "loginToApp": "Login to InvenShare",
+
+  "noAccountRegister": "Don't have an account? Register",
+
+  "passwordMismatch": "Passwords do not match",
+
+  "registerSuccess": "Registration successful",
+
+  "createInventorAccount": "Create Inventor Account",
+
+  "fullName": "Full Name",
+
+  "specialtyHintRegister": "Example: Architecture, AI, Mechanics",
+
+  "bioHintRegister": "Write about yourself and your ideas",
+
+  "confirmPassword": "Confirm Password",
+
+  "languageOptions": "Persian / English",
+
+  "backupData": "Backup Data",
+
+  "createBackup": "Create backup of inventions",
+
+  "backupCreated": "Backup created:",
+
+  "restoreData": "Restore Data",
+
+  "restoreBackup": "Restore backup file",
+
+  "restoreCompleted": "Restore completed",
+
+  "aboutApp": "About Application",
+
+  "versionInfo": "InvenShare Version 1.0.0",
+
+  "changePassword": "Change Password",
+
+  "newPassword": "New Password",
+
+  "deleteAccount": "Delete Account"
 }

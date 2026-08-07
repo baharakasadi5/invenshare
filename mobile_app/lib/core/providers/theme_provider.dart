@@ -15,16 +15,13 @@ StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
 
 
 
-
 class ThemeNotifier extends StateNotifier<ThemeMode> {
 
 
   ThemeNotifier()
-      : super(
-    ThemeMode.light,
-  ) {
+      : super(ThemeMode.light) {
 
-    loadTheme();
+    _loadTheme();
 
   }
 
@@ -43,61 +40,32 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
 
 
 
-  void loadTheme() {
+
+  void _loadTheme() {
 
 
-    final isDark =
+    final savedTheme =
     box.get(
-      'darkMode',
-      defaultValue: false,
-    );
-
-
-
-    state =
-    isDark
-
-        ? ThemeMode.dark
-
-        : ThemeMode.light;
-
-
-  }
-
-
-
-
-
-
-
-
-
-  Future<void> changeTheme(
-      ThemeMode mode,
-      ) async {
-
-
-
-    final isDark =
-        mode == ThemeMode.dark;
-
-
-
-
-    await box.put(
-
-      'darkMode',
-
-      isDark,
-
+      'themeMode',
+      defaultValue: 'light',
     );
 
 
 
 
+    if(savedTheme == 'dark'){
 
-    state = mode;
 
+      state = ThemeMode.dark;
+
+
+    }else{
+
+
+      state = ThemeMode.light;
+
+
+    }
 
 
   }
@@ -114,20 +82,66 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
 
 
 
-    final newTheme =
+    if(state == ThemeMode.light){
 
-    state == ThemeMode.dark
 
-        ? ThemeMode.light
-
-        : ThemeMode.dark;
+      state = ThemeMode.dark;
 
 
 
+      await box.put(
+        'themeMode',
+        'dark',
+      );
 
 
-    await changeTheme(
-      newTheme,
+
+    }
+    else{
+
+
+      state = ThemeMode.light;
+
+
+
+      await box.put(
+        'themeMode',
+        'light',
+      );
+
+
+
+    }
+
+
+
+  }
+
+
+
+
+
+
+
+
+  Future<void> changeTheme(
+      ThemeMode mode,
+      ) async {
+
+
+
+    state = mode;
+
+
+
+    await box.put(
+
+      'themeMode',
+
+      mode == ThemeMode.dark
+          ? 'dark'
+          : 'light',
+
     );
 
 

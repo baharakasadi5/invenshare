@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 
 
 final fontProvider =
@@ -12,11 +12,13 @@ StateNotifierProvider<FontNotifier,String>((ref){
 
 
 
+
+
 class FontNotifier extends StateNotifier<String>{
 
 
   FontNotifier()
-      : super("Vazir"){
+      : super("Vazirmatn"){
 
     loadFont();
 
@@ -24,24 +26,43 @@ class FontNotifier extends StateNotifier<String>{
 
 
 
-  final box = Hive.box('settings');
+
+
+  final Box box =
+  Hive.box(
+    'settings',
+  );
+
+
 
 
 
   void loadFont(){
 
-    state =
+
+    final savedFont =
     box.get(
       "font",
-      defaultValue: "Vazir",
+      defaultValue: "Vazirmatn",
     );
+
+
+
+    state =
+        savedFont;
+
 
   }
 
 
 
 
-  Future<void> changeFont(String font) async{
+
+
+
+  Future<void> changeFont(
+      String font,
+      ) async{
 
 
     await box.put(
@@ -50,10 +71,13 @@ class FontNotifier extends StateNotifier<String>{
     );
 
 
-    state = font;
+
+    state =
+        font;
 
 
   }
+
 
 
 }
