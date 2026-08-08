@@ -289,10 +289,9 @@ class _EditInventionPageState
   // ============================================================
 
   Future<void> _removeImage(int index) async {
-    if (index < 0 ||
-        index >= _imagePaths.length) {
-      return;
-    }
+    if (index >= _imagePaths.length || _isPickingImage) {
+  return;
+}
 
     final String path =
         _imagePaths[index];
@@ -364,6 +363,7 @@ Future<void> _replaceImage(int index) async {
 if (index >= _imagePaths.length || _isPickingImage) {
   return;
 }
+
 
     final String? source =
         await showModalBottomSheet<String>(
@@ -1012,7 +1012,3 @@ if (index >= _imagePaths.length || _isPickingImage) {
     );
   }
 }
-
-
-
-

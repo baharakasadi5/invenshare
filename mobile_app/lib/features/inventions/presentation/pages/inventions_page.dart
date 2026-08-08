@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,28 +23,25 @@ class InventionsPage extends ConsumerWidget {
   ) {
     final l10n = AppLocalizations.of(context)!;
 
-    // لیست اختراعات فیلترشده
+    // ============================================================
+    // FILTERED INVENTIONS
+    // ============================================================
+
     final inventions = ref.watch(
       filteredInventionsProvider,
     );
 
-    // تمام اختراعات
+    // ============================================================
+    // ALL INVENTIONS
+    // ============================================================
+
     final allInventions = ref.watch(
       inventionStateProvider,
     );
 
-    // --------------------------------------------------
-    // ساخت لیست دسته‌بندی‌ها
-    // --------------------------------------------------
-    //
-    // مشکل قبلی:
-    // اگر یکی از اختراعات خودش category = "همه" داشته باشد،
-    // مقدار l10n.all دوباره اضافه می‌شد و Dropdown
-    // دو گزینه با value یکسان پیدا می‌کرد.
-    //
-    // بنابراین دسته‌بندی "همه" را از داده‌های ذخیره‌شده
-    // حذف می‌کنیم و فقط یک بار خودمان اضافه می‌کنیم.
-    // --------------------------------------------------
+    // ============================================================
+    // CATEGORIES
+    // ============================================================
 
     final categorySet = <String>{};
 
@@ -53,7 +52,6 @@ class InventionsPage extends ConsumerWidget {
         continue;
       }
 
-      // جلوگیری از ایجاد گزینه تکراری "همه"
       if (category == l10n.all) {
         continue;
       }
@@ -66,16 +64,14 @@ class InventionsPage extends ConsumerWidget {
       ...categorySet,
     ];
 
-    // --------------------------------------------------
-    // دسته‌بندی انتخاب‌شده
-    // --------------------------------------------------
+    // ============================================================
+    // SELECTED CATEGORY
+    // ============================================================
 
     final selectedCategory = ref.watch(
       inventionCategoryProvider,
     );
 
-    // اگر مقدار ذخیره‌شده دیگر در لیست دسته‌بندی‌ها وجود
-    // نداشته باشد، به صورت خودکار روی "همه" قرار می‌گیرد.
     final safeSelectedCategory =
         categories.contains(selectedCategory)
             ? selectedCategory
@@ -91,23 +87,23 @@ class InventionsPage extends ConsumerWidget {
         ),
       ),
 
-      // ==================================================
+      // ==========================================================
       // BODY
-      // ==================================================
+      // ==========================================================
 
       body: Column(
         children: [
-          // ==================================================
+          // ======================================================
           // SEARCH + CATEGORY
-          // ==================================================
+          // ======================================================
 
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                // --------------------------------------------------
+                // ==================================================
                 // SEARCH
-                // --------------------------------------------------
+                // ==================================================
 
                 TextField(
                   decoration: InputDecoration(
@@ -132,25 +128,22 @@ class InventionsPage extends ConsumerWidget {
                   height: 12,
                 ),
 
-                // --------------------------------------------------
-                // CATEGORY DROPDOWN
-                // --------------------------------------------------
+                // ==================================================
+                // CATEGORY
+                // ==================================================
 
                 DropdownButtonFormField<String>(
-                     initialValue: safeSelectedCategory,
-
+                  initialValue: safeSelectedCategory,
                   decoration: InputDecoration(
                     labelText: l10n.category,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-
-                  // به علت استفاده از Set در بالا،
-                  // دیگر مقدار تکراری وجود نخواهد داشت.
                   items: categories
                       .map(
-                        (category) => DropdownMenuItem<String>(
+                        (category) =>
+                            DropdownMenuItem<String>(
                           value: category,
                           child: Text(
                             category,
@@ -158,7 +151,6 @@ class InventionsPage extends ConsumerWidget {
                         ),
                       )
                       .toList(),
-
                   onChanged: (value) {
                     if (value == null) {
                       return;
@@ -175,9 +167,9 @@ class InventionsPage extends ConsumerWidget {
             ),
           ),
 
-          // ==================================================
-          // INVENTIONS LIST
-          // ==================================================
+          // ======================================================
+          // INVENTIONS
+          // ======================================================
 
           Expanded(
             child: inventions.isEmpty
@@ -188,9 +180,7 @@ class InventionsPage extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
                     ),
-
                     itemCount: inventions.length,
-
                     separatorBuilder: (
                       context,
                       index,
@@ -199,16 +189,17 @@ class InventionsPage extends ConsumerWidget {
                         height: 12,
                       );
                     },
-
                     itemBuilder: (
                       context,
                       index,
                     ) {
-                      final invention = inventions[index];
+                      final invention =
+                          inventions[index];
 
                       return Card(
                         elevation: 1,
-                        clipBehavior: Clip.antiAlias,
+                        clipBehavior:
+                            Clip.antiAlias,
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
@@ -216,57 +207,72 @@ class InventionsPage extends ConsumerWidget {
                               MaterialPageRoute(
                                 builder: (_) =>
                                     InventionDetailsPage(
-                                  invention: invention,
+                                  invention:
+                                      invention,
                                 ),
                               ),
                             );
                           },
-
                           child: ListTile(
                             contentPadding:
-                                const EdgeInsets.all(16),
-
-                            // --------------------------------------------------
-                            // ICON
-                            // --------------------------------------------------
-
-                            leading: const CircleAvatar(
-                              child: Icon(
-                                Icons.lightbulb_outline,
-                              ),
+                                const EdgeInsets.all(
+                              12,
                             ),
 
-                            // --------------------------------------------------
+                            // ==================================================
+                            // INVENTION IMAGE
+                            // ==================================================
+
+                            leading:
+                                _buildInventionImage(
+                              invention.images,
+                            ),
+
+                            // ==================================================
                             // TITLE
-                            // --------------------------------------------------
+                            // ==================================================
 
                             title: Text(
                               invention.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                              style:
+                                  const TextStyle(
+                                fontWeight:
+                                    FontWeight.bold,
                               ),
-                            ),
-
-                            // --------------------------------------------------
-                            // DESCRIPTION
-                            // --------------------------------------------------
-
-                            subtitle: Text(
-                              invention.description,
-                              maxLines: 2,
+                              maxLines: 1,
                               overflow:
-                              TextOverflow.ellipsis,
+                                  TextOverflow.ellipsis,
                             ),
 
-                            // --------------------------------------------------
-                            // DELETE
-                            // --------------------------------------------------
+                            // ==================================================
+                            // DESCRIPTION
+                            // ==================================================
 
-                            trailing: IconButton(
-                              icon: const Icon(
-                                Icons.delete_outline,
+                            subtitle: Padding(
+                              padding:
+                              const EdgeInsets.only(
+                                top: 5,
                               ),
+                              child: Text(
+                                invention.description,
+                                maxLines: 2,
+                                overflow:
+                                    TextOverflow.ellipsis,
+                              ),
+                            ),
 
+                            // ==================================================
+                            // DELETE
+                            // ==================================================
+
+                            trailing:
+                                IconButton(
+                              icon: const Icon(
+                                Icons
+                                    .delete_outline,
+                              ),
+                              tooltip:
+                                  l10n.delete,
                               onPressed: () {
                                 _showDeleteDialog(
                                   context,
@@ -284,9 +290,9 @@ class InventionsPage extends ConsumerWidget {
         ],
       ),
 
-      // ==================================================
-      // ADD INVENTION BUTTON
-      // ==================================================
+      // ==========================================================
+      // ADD INVENTION
+      // ==========================================================
 
       floatingActionButton:
           FloatingActionButton.extended(
@@ -299,11 +305,9 @@ class InventionsPage extends ConsumerWidget {
             ),
           );
         },
-
         icon: const Icon(
           Icons.add,
         ),
-
         label: Text(
           l10n.addInvention,
         ),
@@ -311,16 +315,104 @@ class InventionsPage extends ConsumerWidget {
     );
   }
 
-  // ==================================================
+  // ============================================================
+  // INVENTION IMAGE
+  // ============================================================
+
+  Widget _buildInventionImage(
+    List<String> imagePaths,
+  ) {
+    // ------------------------------------------------------------
+    // No image
+    // ------------------------------------------------------------
+
+    if (imagePaths.isEmpty) {
+      return const CircleAvatar(
+        radius: 30,
+        child: Icon(
+          Icons.lightbulb_outline,
+          size: 28,
+        ),
+      );
+    }
+
+    final String imagePath =
+        imagePaths.first.trim();
+
+    // ------------------------------------------------------------
+    // Empty path
+    // ------------------------------------------------------------
+
+    if (imagePath.isEmpty) {
+      return const CircleAvatar(
+        radius: 30,
+        child: Icon(
+          Icons.lightbulb_outline,
+          size: 28,
+        ),
+      );
+    }
+
+    // ------------------------------------------------------------
+    // Local file image
+    // ------------------------------------------------------------
+
+    final File imageFile =
+        File(imagePath);
+
+    return ClipRRect(
+      borderRadius:
+          BorderRadius.circular(12),
+      child: SizedBox(
+        width: 60,
+        height: 60,
+        child: Image.file(
+          imageFile,
+          fit: BoxFit.cover,
+
+          // ------------------------------------------------------
+          // File does not exist / image is invalid
+          // ------------------------------------------------------
+
+          errorBuilder: (
+            context,
+            error,
+            stackTrace,
+          ) {
+            return Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .colorScheme
+                    .surfaceContainerHighest,
+                borderRadius:
+                    BorderRadius.circular(
+                  12,
+                ),
+                ),
+              child: const Icon(
+                Icons.broken_image_outlined,
+                size: 28,
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  // ============================================================
   // DELETE CONFIRMATION
-  // ==================================================
+  // ============================================================
 
   void _showDeleteDialog(
     BuildContext context,
     WidgetRef ref,
     String id,
   ) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n =
+        AppLocalizations.of(context)!;
 
     showDialog(
       context: context,
@@ -329,35 +421,33 @@ class InventionsPage extends ConsumerWidget {
           title: Text(
             l10n.deleteInvention,
           ),
-
           content: Text(
             l10n.deleteConfirm,
           ),
-
           actions: [
-            // --------------------------------------------------
+            // ----------------------------------------------------
             // CANCEL
-            // --------------------------------------------------
+            // ----------------------------------------------------
 
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-
               child: Text(
                 l10n.cancel,
               ),
             ),
 
-            // --------------------------------------------------
+            // ----------------------------------------------------
             // DELETE
-            // --------------------------------------------------
+            // ----------------------------------------------------
 
             FilledButton(
               onPressed: () async {
                 await ref
                     .read(
-                      inventionStateProvider.notifier,
+                      inventionStateProvider
+                          .notifier,
                     )
                     .deleteInvention(id);
 
@@ -365,7 +455,6 @@ class InventionsPage extends ConsumerWidget {
                   Navigator.pop(context);
                 }
               },
-
               child: Text(
                 l10n.delete,
               ),
@@ -377,11 +466,12 @@ class InventionsPage extends ConsumerWidget {
   }
 }
 
-// ======================================================
+// ================================================================
 // EMPTY INVENTIONS VIEW
-// ======================================================
+// ================================================================
 
-class _EmptyInventionsView extends StatelessWidget {
+class _EmptyInventionsView
+    extends StatelessWidget {
   final String text;
 
   const _EmptyInventionsView({

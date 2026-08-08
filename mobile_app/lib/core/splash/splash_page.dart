@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/auth/presentation/pages/login_page.dart';
-import '../../features/auth/presentation/providers/auth_provider.dart';
-import '../../features/home/presentation/pages/inventor_dashboard_page.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -20,31 +18,23 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   }
 
   Future<void> _startApp() async {
+    // نمایش Splash به مدت کوتاه
     await Future.delayed(
-      const Duration(seconds: 3),
+      const Duration(seconds: 2),
     );
 
     if (!mounted) {
       return;
     }
 
-    final user = ref.read(authProvider);
-
-    if (user != null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const InventorDashboardPage(),
-        ),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const LoginPage(),
-        ),
-      );
-    }
+    // فعلاً برای تست Authentication
+    // همیشه ابتدا صفحه Login نمایش داده می‌شود.
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const LoginPage(),
+      ),
+    );
   }
 
   @override
@@ -74,7 +64,9 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                 size: 90,
                 color: theme.colorScheme.onPrimary,
               ),
+
               const SizedBox(height: 20),
+
               Text(
                 'InvenShare',
                 style: theme.textTheme.headlineMedium?.copyWith(
@@ -82,7 +74,9 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+
               const SizedBox(height: 25),
+
               SizedBox(
                 width: 28,
                 height: 28,
